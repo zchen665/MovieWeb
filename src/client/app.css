@@ -1,0 +1,94 @@
+
+body {
+  font-family: "Times New Roman", Times, serif;
+  text-align: center;
+  margin: auto;
+}
+
+.flex_container{
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  align-content: space-between;
+  flex-direction: row;
+  /* border: darkgoldenrod 2px solid; */
+}
+
+.wrapper{
+  display: flex;
+  position: relative;
+  border-radius: 24px;
+  padding: 5px 10px;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Start of Header css */
+#header{
+  background-color: cornflowerblue;
+  z-index: -1;
+  /* border: black 3px solid; */
+}
+
+#login_wrapper{
+  font-size: x-large;
+  margin-right: 1vw;
+  color: black;
+}
+
+#login_wrapper:hover{
+  color: rgb(107, 100, 76);
+  text-decoration: underline;
+}
+#refresh_icon_wrapper{
+  margin-left: 1vw;
+}
+
+#refresh_icon{
+  width: 50px;
+  filter: invert(70%) sepia(76%) saturate(309%) hue-rotate(313deg) brightness(50%) contrast(63%);
+}
+
+.flex_container div.wrapper:hover{
+  cursor: pointer;
+  box-shadow: 0 0 5px 2px wheat;
+  background-image:radial-gradient(circle, rgb(153, 218, 255),cornflowerblue);
+  transition:0.6s;
+}
+/* End of Header css */
+
+/* Start of Search component css */
+#search_bar{
+  margin-top: 4vh;
+  height: 35px;
+}
+
+#search_textbox{
+  width: 40vw;
+  max-width: 800px;
+  font-size: large;
+  margin-right: 5px;
+  border: None;
+  background-color: rgb(235, 238, 238);
+  border-radius: 5px;
+}
+
+#search_textbox:focus{
+  border: cornflowerblue 2px solid;
+  outline: none;
+}
+#search_btn{
+  width: 40px;
+  border-radius: 10px;
+  outline: None;
+  border: None;
+  transition: 0.5s;
+}
+#search_btn:hover{
+  background-color: rgb(204, 248, 250);
+  cursor: pointer;
+}
+
+
+/* End of Search component css */
