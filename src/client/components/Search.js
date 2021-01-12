@@ -15,8 +15,6 @@ class Search extends Component {
         this.props.textchange(e.target.value);
     }
 
-
-
     render() {
 
         return (

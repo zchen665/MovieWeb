@@ -7,9 +7,16 @@ class Header extends Component {
         return (
             <div className='flex_container' id='header'>
                 <div className='wrapper' id='refresh_icon_wrapper'>
-                    <img id="refresh_icon" src={require('../Img/homeIcon.svg')} alt="refresh icon" />
+                    <img
+                        id="refresh_icon"
+                        src={require('../Img/homeIcon.svg')}
+                        alt="refresh icon"
+                        onClick={() => {
+                            this.props.refresh_page();
+                        }}
+                    />
                 </div>
-                <h1 className='wrapper' id= 'web_title'>MovieApp</h1>
+                <h1 className='wrapper' id='web_title'>MovieApp</h1>
                 <div className='wrapper' id='login_wrapper'>
                     login
                 </div>
