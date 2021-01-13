@@ -3,13 +3,12 @@ body {
   font-family: "Times New Roman", Times, serif;
   text-align: center;
   margin: auto;
+  background-color: rgb(244, 255, 255);
 }
 
 .flex_container{
   display: flex;
   justify-content: center;
-  align-items: stretch;
-  align-content: space-between;
   flex-direction: row;
   /* border: darkgoldenrod 2px solid; */
 }
@@ -26,7 +25,7 @@ body {
 
 /* Start of Header css */
 #header{
-  background-color: cornflowerblue;
+  background-color: rgb(159, 191, 252);
   z-index: -1;
   /* border: black 3px solid; */
 }
@@ -89,6 +88,64 @@ body {
   background-color: rgb(204, 248, 250);
   cursor: pointer;
 }
-
-
 /* End of Search component css */
+
+/* start of movie display section*/
+#movie_section{
+  margin: 3vh, 3vw;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.movie_container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 250px;
+  height: 450px;
+}
+.movie_title{
+  word-wrap: normal;
+}
+.movie_poster{
+  width: 200px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+.movie_poster>img{
+  width: 200px;
+  height: auto;
+}
+.movie_year{
+  margin-top: auto;
+  margin-bottom: 5px;
+}
+/* end of movie display section */
+
+/* start of page navigator section */
+.nav_btn{
+  background-color: rgb(206, 206, 206);
+  margin: 1vh 3px;
+  width: fit-content;
+  padding: 0 12px;
+  height: 30px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+}
+.nav_btn:hover{
+  background-color: rgb(161, 165, 165);
+}
+.page_active {
+  background-color: rgb(207, 226, 226);
+  text-decoration: underline;
+
+}
+/* end of page navigator section */
