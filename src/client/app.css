@@ -6,11 +6,32 @@ body {
   background-color: rgb(244, 255, 255);
 }
 
+#web_content{
+  position: relative;
+  min-height: 95vh;
+  /* margin-bottom: auto; */
+}
+
+/* footer */
+footer{
+  text-align: center;
+  margin-top: 1vh;
+  height: 4vh;
+  position: relative;
+  font-family: 'Courier New', Courier, monospace;
+}
+
 .flex_container{
   display: flex;
   justify-content: center;
   flex-direction: row;
   /* border: darkgoldenrod 2px solid; */
+}
+.flex_container_col{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: auto;
 }
 
 .wrapper{
@@ -61,6 +82,7 @@ body {
 #search_bar{
   margin-top: 4vh;
   height: 35px;
+  margin-bottom: 10px;
 }
 
 #search_textbox{
@@ -106,7 +128,15 @@ body {
   align-items: center;
   width: 250px;
   height: 450px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: 0.2s;
 }
+
+.movie_container:hover {
+  background-color: rgb(216, 216, 216);
+}
+
 .movie_title{
   word-wrap: normal;
 }
@@ -149,3 +179,26 @@ body {
 
 }
 /* end of page navigator section */
+
+/* start of movie detail display css */
+#movie_display_container{
+  align-items: center;
+}
+
+#movie_display_details{
+  flex-wrap: wrap;
+  font-size: larger;
+}
+dl > dt{
+  flex-basis: 20vw;
+  font-weight: bold;
+  text-align: right;
+  margin-top: 20px;
+}
+dl>dd{
+  /* border-bottom: 1px black solid; */
+  margin-top: 20px;
+  flex-basis: 70vw;
+  text-align: left;
+}
+/* end of movie detail display css */
