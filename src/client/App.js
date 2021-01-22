@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Header } from './components/Header.js';
+import Header from './components/Header.js';
 import { Search } from './components/Search.js';
 import Movie from './components/Movie.js';
 import { PageNav } from './components/PageNav.js';
@@ -109,11 +109,6 @@ export default class App extends Component {
       });
   };
 
-  //home button in Hearder for refresh page
-  handle_refresh = () => {
-    window.location.reload();
-  };
-
   //handle page change request( nextpage etc.)
   //async func due to asynchronous nature of setstate
   handle_page_change = async (page) => {
@@ -129,8 +124,10 @@ export default class App extends Component {
     return (
       <div className="flex_container_col">
         <div id="web_content">
-          <Header refresh_page={this.handle_refresh} />
+          {/* <Header refresh_page={this.handle_refresh} /> */}
           <Search textchange={this.handle_textChange} onsearch={this.handle_submit} />
+          {/* this following block determines whether to show the loading phrase or display
+          movie search results. */}
           {loading ? <h3>Loading.. please wait!</h3> :
               error_msg ? <h3>{`Sorry ${error_msg}`}</h3> :
                 display_movie_page? <MoviePage movie_info= {target_movie_info}/> :
