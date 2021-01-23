@@ -7,7 +7,6 @@ class Search extends Component {
 
     handle_onsubmit = (e) => {
         e.preventDefault();
-        // console.log("click");
         this.props.onsearch();
     }
 

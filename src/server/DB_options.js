@@ -1,6 +1,12 @@
 const mysql = require('mysql2/promise');
 const { util } = require('webpack');
 const [admin_user, admin_host, admin_pw, db_name] = ['root', 'localhost', '12580@Czz', 'mv_app'];
+const db_config = {
+    host: admin_host,
+    user: admin_user,
+    password: admin_pw,
+    database: db_name
+};
 
 
 //create database named db_name
@@ -21,7 +27,7 @@ const create_db = async () => {
         });
 
         await con.query(`CREATE DATABASE ${db_name}`);
-        res.message = "Connected! about to create new database";
+        res.message = "Created new database";
         res.status = 1;
     } catch (err) {
         res.message = err.message;
@@ -40,15 +46,9 @@ const create_table = async () => {
         status: null
     }
     try {
-        con = await mysql.createConnection({
-            host: admin_host,
-            user: admin_user,
-            password: admin_pw,
-            database: db_name
-        });
+        con = await mysql.createConnection(db_config);
 
         //user table
-        console.log("Connected! about to create new table");
         let sql_cmd = 'CREATE TABLE IF NOT EXISTS uasdfWs(id INT AUTO_INCREMENT PRIMARY KEY, \
             name VARCHAR(63), password VARCHAR(63))';
         const result_user_table = await con.query(sql_cmd);
@@ -62,7 +62,7 @@ const create_table = async () => {
 
         //movie table
         sql_cmd = 'CREATE TABLE IF NOT EXISTS movies(id INT AUTO_INCREMENT PRIMARY KEY, \
-            user_id INTEGER, movie_id VARCHAR(63))';
+            user_id VARCHAR(63), movie_id VARCHAR(63))';
         const result_movie_table = await con.query(sql_cmd);
 
         if (result_movie_table[0].warningStatus !== 0) {
@@ -95,15 +95,10 @@ const add_user = async (u_name, u_pw) => {
     }
     let con;
     try {
-        con = await mysql.createConnection({
-            host: admin_host,
-            user: admin_user,
-            password: admin_pw,
-            database: db_name
-        });
+        con = await mysql.createConnection(db_config);
 
         //check if user name already been registered
-        const result = await con.query("SELECT name FROM users WHERE name = ?", [u_name]);
+        const result = await con.query("SELECT name FROM users WHERE name =BINARY ?", [u_name]);
         if (!result[0][0]) {
             let sql_cmd = "INSERT INTO users (name, password) VALUES (?,?)";
             await con.query(sql_cmd, [u_name, u_pw]);
@@ -116,6 +111,7 @@ const add_user = async (u_name, u_pw) => {
             res.status = -1;
         }
     } catch (err) {
+        console.log(err);
         res = {
             message: err.message,
             status: -1
@@ -126,6 +122,39 @@ const add_user = async (u_name, u_pw) => {
     return res;
 }
 
+const verify_user = async(u_name, u_pw)=>{
+    let con;
+    let res = {
+        message: "",
+        status: null
+    }
+
+    try {
+        con = await mysql.createConnection(db_config);
+        let sql_cmd = "SELECT * FROM users WHERE name = BINARY ? AND password = BINARY ?";
+        const result = await con.query(sql_cmd, [u_name, u_pw]);
+        if (result[0][0]) {
+            res = {
+                message:  "Login success.",
+                status: 1
+            }
+        }else{
+            res = {
+                message: "Check user name and password again",
+                status: -1
+            }
+        }
+    } catch (err) {
+        console.log(err);
+        res = {
+            message: err.message,
+            status: -1
+        }
+    } finally{
+        con.end();
+    }
+    return res;
+}
 
 //
 const add_movie = async (u_id, movie_id) => {
@@ -135,22 +164,25 @@ const add_movie = async (u_id, movie_id) => {
         status: null
     }
     try {
-        con = await mysql.createConnection({
-            host: admin_host,
-            user: admin_user,
-            password: admin_pw,
-            database: db_name
-        });
+        con = await mysql.createConnection(db_config);
 
-        const result = await con.query("SELECT movie_id FROM movies WHERE user_id =?", u_id);
-        console.log(result[0][0].movie_id);
-
-        let sql_cmd = "INSERT INTO movies (user_id, movie_id) VALUES (?,?)";
-        await con.query(sql_cmd, [u_id, movie_id]);
-        console.log("inserted ")
-
-
+        //find movies associated with target user
+        const result = await con.query("SELECT movie_id FROM movies WHERE user_id = BINARY? AND movie_id =?", [u_id, movie_id]);
+        if (result[0].length !== 0) { //user already has this movie added
+            res = {
+                message: "Movie already exists.",
+                status: -1,
+            }
+        } else { //if not present then add this movie 
+            let sql_cmd = "INSERT INTO movies (user_id, movie_id) VALUES (?,?)";
+            await con.query(sql_cmd, [u_id, movie_id]);
+            res = {
+                message: "Movie added.",
+                status: 1,
+            }
+        }
     } catch (err) {
+        console.log(err);
         res = {
             message: err.Message,
             status: -1
@@ -161,29 +193,86 @@ const add_movie = async (u_id, movie_id) => {
     return res;
 }
 
-// create_db();
+const remove_movie = async (u_id, movie_id) => {
+    let con;
+    let res = {
+        message: "",
+        status: null
+    }
+    try {
+        con = await mysql.createConnection(db_config);
 
-// create_table();
-let val;
-(async () => {
-    // for (let i = 0; i < 500; i++) {
-    //     val = await add_user(`daddy${i}`, "12354");
+        //remove target movie
+        const result = await con.query("DELETE FROM movies WHERE user_id = BINARY ? AND movie_id =?", [u_id, movie_id]);
+        if (result[0].affectedRows > 0) {
+            res = {
+                message: "Movie removed.",
+                status: 1
+            }
+        } else {
+            res = {
+                message: "Target movie not in record.",
+                status: 1
+            }
+        }
+    } catch (err) {
+        console.log(err);
+        res = {
+            message: err.Message,
+            status: -1
+        }
+    } finally {
+        con.end();
+    }
+    return res;
+}
 
-    //     // val = await create_table();
-    //     console.log("Result:", val);
-    // }
-    let res = await add_movie(1, "shentama ");
-    console.log(res);
-})();
+const get_all_movies = async (u_id) => {
+    let con;
+    let res = {
+        message: "",
+        status: null,
+        data: null   //store the movie_id returned from db
+    }
+    try {
+        con = await mysql.createConnection(db_config);
 
-// add_user("shen", "12354");
+        //retrive all movies from target user
+        const result = await con.query("SELECT movie_id FROM movies WHERE user_id = BINARY?", [u_id]);
+        res = {
+            message: "Retrived all movies.",
+            status: 1,
+            data: result[0].map(id => id.movie_id)
+        }
 
-console.log("end");
-// add_movie(1, 'ttdiaonima');
+    } catch (err) {
+        console.log(err);
+        res = {
+            message: err.Message,
+            status: -1
+        }
+    } finally {
+        con.end();
+    }
+    return res;
+}
 
+// (async () => {
+//     // await add_user("DAOKO", "1234");
+//     // let val_1 = await get_all_movies("DAOKO","GOD BLOW");
+//     // console.log("result: ", val_1);
+//     let val_2 = await remove_movie("DAOKO", "god BLOW");
+//     console.log("result 2:", val_2);
 
+// })();
 
 module.exports = {
-    insert_user: add_user,
-    insert_movie: add_movie
+    create_db: create_db,
+    create_table: create_table,
+    add_user: add_user,
+    add_movie: add_movie,
+    remove_movie: remove_movie,
+    get_all_movies: get_all_movies,
+    verify_user: verify_user
 }
+
