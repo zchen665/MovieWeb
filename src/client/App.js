@@ -4,6 +4,10 @@ import { Search } from './components/Search.js';
 import Movie from './components/Movie.js';
 import { PageNav } from './components/PageNav.js';
 import MoviePage from './components/MoviePage.js';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { UserPage } from './components/UserPage.js';
+import { PrivateRoute } from './components/PrivateRoute.js'
+import Login from './components/Login.js';
 
 export default class App extends Component {
   state = {
@@ -15,6 +19,7 @@ export default class App extends Component {
     total_page: null,
     display_movie_page: false, //controls the display of a detailed report on one movie 
     target_movie_info: null, //the info of the detailed movie display
+    isAuthed: false,
   };
 
   //get value from search bar text field
@@ -38,9 +43,9 @@ export default class App extends Component {
       const movie_info = await res.json();
 
       this.setState({
-         display_movie_page: true,
-         target_movie_info: movie_info,
-       });
+        display_movie_page: true,
+        target_movie_info: movie_info,
+      });
 
     } catch (error) {
       this.setState({ error_msg: error.message + ", Check Internet connection" });
@@ -102,9 +107,9 @@ export default class App extends Component {
         this.setState({ error_msg: error.message + ", Check Internet connection" });
       })
       .finally(() => {
-        this.setState({ 
+        this.setState({
           loading: false,
-          display_movie_page : false, 
+          display_movie_page: false,
         });
       });
   };
@@ -119,29 +124,51 @@ export default class App extends Component {
     this.handle_submit();
   };
 
-  render() {
-    const { target_movie_info, display_movie_page, loading, error_msg, movies, cur_page, total_page } = this.state;
-    return (
-      <div className="flex_container_col">
-        <div id="web_content">
-          {/* <Header refresh_page={this.handle_refresh} /> */}
-          <Search textchange={this.handle_textChange} onsearch={this.handle_submit} />
-          {/* this following block determines whether to show the loading phrase or display
-          movie search results. */}
-          {loading ? <h3>Loading.. please wait!</h3> :
-              error_msg ? <h3>{`Sorry ${error_msg}`}</h3> :
-                display_movie_page? <MoviePage movie_info= {target_movie_info}/> :
-                <div id="movie_section">{movies}</div>}
-          {!display_movie_page ?
-            loading ? "" :
-              error_msg ? "" :
-                movies ? <PageNav change_page={this.handle_page_change} cur_page={cur_page} total_page={total_page} /> : ""
-            : ""
-          }
-        </div>
+  handle_login_auth = (status) => {
+    const { isAuthed } = this.state;
+    if (!isAuthed && status == 1) {
+      this.setState({ isAuthed: true });
+    }
+  }
 
-        <footer><p>Based on omdb api</p></footer>
-      </div>
+
+
+  render() {
+    const { target_movie_info, display_movie_page, loading, error_msg, movies, cur_page, total_page, isAuthed } = this.state;
+    return (
+      <BrowserRouter>
+        <Header isAuthed={isAuthed} />
+        <Switch>
+          <Route exact path='/login'><Login isAuthed={isAuthed} login_form_submit={this.handle_login_auth} /> </Route>
+
+          <Route exact path='/'>
+            <div className="flex_container_col">
+              <div id="web_content">
+                {/* <Header refresh_page={this.handle_refresh} /> */}
+                <Search textchange={this.handle_textChange} onsearch={this.handle_submit} />
+                {/* this following block determines whether to show the loading phrase or display
+          movie search results. */}
+                {loading ? <h3>Loading.. please wait!</h3> :
+                  error_msg ? <h3>{`Sorry ${error_msg}`}</h3> :
+                    display_movie_page ? <MoviePage movie_info={target_movie_info} /> :
+                      <div id="movie_section">{movies}</div>}
+                {!display_movie_page ?
+                  loading ? "" :
+                    error_msg ? "" :
+                      movies ? <PageNav change_page={this.handle_page_change} cur_page={cur_page} total_page={total_page} /> : ""
+                  : ""
+                }
+              </div>
+
+              <footer><p>Based on omdb api</p></footer>
+            </div>
+          </Route >
+
+
+          <PrivateRoute exact path='/user' component={UserPage} isAuthed={isAuthed} loading={loading} />
+        </Switch>
+      </BrowserRouter>
+
     );
   }
 }

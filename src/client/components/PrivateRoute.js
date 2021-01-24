@@ -5,22 +5,23 @@ class PrivateRoute extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            component: this.props.component,
-            isAuthenticated: this.props.isAuthenticated,
+            Component: this.props.component,
+            isAuthenticated: this.props.isAuthed,
             loading: this.props.loading
         }
     }
 
     render() {
-
-        const { isAuthenticated, loading, component} = this.state;
-        if (loading) {
+        
+        const { isAuthenticated, loading, Component} = this.state;
+        console.log(isAuthenticated);
+        if (loading == true) {
             return <h3>loading...Please wait!</h3>
         }
-        if (!isAuthenticated) {
+        if (isAuthenticated!=="true") {
             return <Redirect to="/login" />
         }
-        return <component {...this.props}></component>
+        return <Component {...this.props}> </Component>
     }
 
 }

@@ -8,8 +8,8 @@ body {
 
 #web_content{
   position: relative;
-  min-height: 95vh;
-  /* margin-bottom: auto; */
+  height: calc(100vh - 5vh - 60px);
+  margin: auto;
 }
 
 /* footer */
@@ -48,13 +48,24 @@ footer{
 #header{
   background-color: rgb(159, 191, 252);
   z-index: -1;
+  height: 60px;
   /* border: black 3px solid; */
+}
+
+#web_title{
+  position: absolute;
+  margin: 5px auto;
+  padding: 10; 
 }
 
 #login_wrapper{
   font-size: x-large;
   margin-right: 1vw;
   color: black;
+}
+#user_page_redirect_wrapper{
+  font-size: large;
+  margin-right: 1vw;
 }
 
 #login_wrapper:hover{
