@@ -1,44 +1,44 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { UserPage } from './UserPage.js';
+
+//instance of HOC higher-order-component
+
+//provide a wrapper around passed in child component, make it 
+//only accessible if authorized/ logged in 
 class PrivateRoute extends React.Component {
     constructor(props) {
         super(props);
+        const session = sessionStorage.getItem('token');
+        let token;
+        if (session) {
+            token = JSON.parse(session);
+        }
         this.state = {
             Component: this.props.component,
-            isAuthenticated: this.props.isAuthed,
-            loading: this.props.loading
+            isAuthed: token? token.isAuthed: false,
+            username: token? token.username: "",
         }
     }
 
+    // componentDidUpdate() {
+    //     const session = sessionStorage.getItem('token');
+    //     if (session) {
+    //         const token = JSON.parse(session);
+    //         this.setState(token);
+    //     }
+    // }
+
     render() {
-        
-        const { isAuthenticated, loading, Component} = this.state;
-        console.log(isAuthenticated);
-        if (loading == true) {
-            return <h3>loading...Please wait!</h3>
+
+        const { isAuthed, Component, username } = this.state;
+        // console.log(isAuthed);
+        if (isAuthed != true) {
+            return <Redirect to={`/login`} />
+        } else {
+            return <Component {...this.props} username={username}> </Component>
         }
-        if (isAuthenticated!=="true") {
-            return <Redirect to="/login" />
-        }
-        return <Component {...this.props}> </Component>
     }
 
 }
 
 export { PrivateRoute };
-
-//function component version:
-// const PrivateRoute = ({component: Component, isAuthenticated, isLoading, ...rest }) => { 
-//     if(isLoading) {
-//         return <div>Loading...</div>
-//     }
-//     if(!isAuthenticated) {
-//         return <Redirect to="/login" />
-//     }
-//     return <Component {...this.props} /> 
-//  }
-// } 
-// } 
-
-// export { PrivateRoute };

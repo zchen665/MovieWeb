@@ -1,19 +1,25 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { NavLink, Redirect, withRouter } from 'react-router-dom';
 
-export default class Login extends React.Component {
-    state = {
-        username: "",
-        password: "",
-        isAuthed: this.props.isAuthed,
-        message: ""
+class Login extends React.Component {
+    constructor(props) {
+        super(props);
+        let token;
+        const session = sessionStorage.getItem('token');
+        if (session) {
+            token = JSON.parse(session);
+        }
+        this.state = {
+            username: "", //for user text input.
+            password: "",
+            isAuthed: token ? token.isAuthed : false,
+            message: ""
+        }
     }
 
-    handle_onchange_username = (e) => {
-        this.setState({ username: e.target.value })
-    };
-    handle_onchange_password = (e) => {
-        this.setState({ password: e.target.value })
+    handle_onchange = (e) => {
+        this.setState({ [e.target.name]: e.target.value,
+        message: "" })
     };
 
     handle_submit = async (e) => {
@@ -31,41 +37,53 @@ export default class Login extends React.Component {
                 throw new Error(`HTTP error! status: ${res.status}`); //exit when fail to retrieve
             }
             const { status, message } = await res.json();
-            if (status == 1) { this.props.login_form_submit(status); }
-            this.setState({
-                message: message
-            });
 
+            if (status == 1) { //login success
+                const token = { username: username, isAuthed: true }
+                sessionStorage.setItem('token', JSON.stringify(token));
+                this.props.login_request(status);
+                this.setState(token); //which causing redirects in componentDidUpdata();
+            } else {
+                this.setState({
+                    message: message
+                });
+            }
 
             // console.log("sent: ",JSON.stringify({ u_name: username, pw: password }));
             // console.log("response: ", data);
         } catch (err) {
             console.log("err: ", err.message);
+            this.setState({
+                message: err.message
+            });
         }
-        console.log(`sumbit: ${username},  ${password}`);
-
-
     };
+    
+
+    componentDidUpdate() {
+        const { isAuthed } = this.state;
+        if (isAuthed) this.props.history.push('/user');
+    }
 
 
     render() {
+        const { message } = this.state;
+        return (
+            <div>
+                <h2>Log in</h2>
+                <form onSubmit={this.handle_submit} >
+                    <input name='username' type='text' placeholder='Username' onChange={this.handle_onchange} />
+                    <input name='password' type='password' placeholder='Password' onChange={this.handle_onchange} />
+                    <input type='submit' />
+                </form>
+                <p>{message}</p>
 
-        const { isAuthed, message } = this.state;
-        ///////////////////////////////////////////////////////////
-        // need to debug here
-        if (isAuthed) { return <Redirect to='/user' /> }
-        else {
-            return (
-                <div>
-                    <form onSubmit={this.handle_submit} >
-                        <input type='text' placeholder='Username' onChange={this.handle_onchange_username} />
-                        <input type='text' placeholder='Password' onChange={this.handle_onchange_password} />
-                        <input type='submit' />
-                    </form>
-                    <p>{message}</p>
-                </div>
-            );
-        }
+                <NavLink to='/sign_up'>Sign up</NavLink>
+            </div>
+        );
+
     }
 
 }
+
+export default withRouter(Login);

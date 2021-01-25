@@ -4,12 +4,13 @@ import { Search } from './components/Search.js';
 import Movie from './components/Movie.js';
 import { PageNav } from './components/PageNav.js';
 import MoviePage from './components/MoviePage.js';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { UserPage } from './components/UserPage.js';
+import { BrowserRouter, Route, Switch, withRouter } from 'react-router-dom';
+import UserPage from './components/UserPage.js';
 import { PrivateRoute } from './components/PrivateRoute.js'
 import Login from './components/Login.js';
+import SignUp from './components/SignUp.js';
 
-export default class App extends Component {
+class App extends Component {
   state = {
     search_val: "",
     movies: null, //stores search results in array of JSX Movie component
@@ -19,7 +20,8 @@ export default class App extends Component {
     total_page: null,
     display_movie_page: false, //controls the display of a detailed report on one movie 
     target_movie_info: null, //the info of the detailed movie display
-    isAuthed: false,
+    isAuthed: false, //authentication will not impact much of this component.
+    username: null
   };
 
   //get value from search bar text field
@@ -41,11 +43,12 @@ export default class App extends Component {
         throw new Error(`HTTP error! status: ${res.status}`); //exit when fail to retrieve
       }
       const movie_info = await res.json();
-
       this.setState({
         display_movie_page: true,
         target_movie_info: movie_info,
       });
+
+      this.props.history.push(`/movie_detail/id=${movie_id}`);
 
     } catch (error) {
       this.setState({ error_msg: error.message + ", Check Internet connection" });
@@ -53,6 +56,7 @@ export default class App extends Component {
       this.setState({
         loading: false,
       });
+      
     }
   }
 
@@ -111,6 +115,9 @@ export default class App extends Component {
           loading: false,
           display_movie_page: false,
         });
+
+        //directs to new page
+        this.props.history.push(`/search?${search_val}&page=${cur_page}`);
       });
   };
 
@@ -124,24 +131,43 @@ export default class App extends Component {
     this.handle_submit();
   };
 
-  handle_login_auth = (status) => {
+  //handle both login and logout
+  //if status == 1: login 
+  // status == -1: logout 
+  handle_log_inout = (status) => {
     const { isAuthed } = this.state;
     if (!isAuthed && status == 1) {
       this.setState({ isAuthed: true });
+      console.log("logged in in app.js");
+    }
+    else if (isAuthed && status == -1) {
+      this.setState({ isAuthed: false });
+      console.log("logged out in app.js");
+    }
+  }
+
+  //this will update the authentication token and then pass isAuthed state to
+  //the Header component. therefore Header's isAuthed state directly inherits from
+  // the App component.
+  componentDidMount() {
+    const session = sessionStorage.getItem('token');
+    if (session) {
+      const token = JSON.parse(session);
+      this.setState(token);
     }
   }
 
 
-
   render() {
-    const { target_movie_info, display_movie_page, loading, error_msg, movies, cur_page, total_page, isAuthed } = this.state;
+    const { username, target_movie_info, display_movie_page, loading, error_msg, movies, cur_page, total_page, isAuthed } = this.state;
     return (
-      <BrowserRouter>
-        <Header isAuthed={isAuthed} />
+      // <BrowserRouter>
+      <div>
+        <Header isAuthed={isAuthed} username={username} />
         <Switch>
-          <Route exact path='/login'><Login isAuthed={isAuthed} login_form_submit={this.handle_login_auth} /> </Route>
-
-          <Route exact path='/'>
+          <Route exact path='/login'><Login login_request={this.handle_log_inout} /> </Route>
+          <Route exact path='/sign_up'><SignUp login_request={this.handle_log_inout} /></Route>
+          <Route path='/'>
             <div className="flex_container_col">
               <div id="web_content">
                 {/* <Header refresh_page={this.handle_refresh} /> */}
@@ -150,7 +176,7 @@ export default class App extends Component {
           movie search results. */}
                 {loading ? <h3>Loading.. please wait!</h3> :
                   error_msg ? <h3>{`Sorry ${error_msg}`}</h3> :
-                    display_movie_page ? <MoviePage movie_info={target_movie_info} /> :
+                    display_movie_page ? <Route path='/movie_detail/'><MoviePage movie_info={target_movie_info} /></Route> :
                       <div id="movie_section">{movies}</div>}
                 {!display_movie_page ?
                   loading ? "" :
@@ -165,10 +191,12 @@ export default class App extends Component {
           </Route >
 
 
-          <PrivateRoute exact path='/user' component={UserPage} isAuthed={isAuthed} loading={loading} />
+          <PrivateRoute exact path='/user' component={UserPage} logout_request={this.handle_log_inout} />
         </Switch>
-      </BrowserRouter>
+      </div>
+      // </BrowserRouter>
 
     );
   }
 }
+export default withRouter(App);

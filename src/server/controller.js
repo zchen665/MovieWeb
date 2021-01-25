@@ -3,12 +3,19 @@ module.exports = (app) => {
         remove_movie, create_db } = require('./DB_options.js');
 
     //route to verify login credentials
-    app.post("/api/login_request", async (req, res, next) => {
+    app.post("/api/login_request", async (req, res) => {
         const { u_name, pw } = req.body;
-        console.log("accessed. ");
-        console.log(`request body: ${req.body}`);
-        console.log(req.body);
+        console.log("Process login request...");
+        console.log(`request body: ${JSON.stringify(req.body)}\n`);
         const result = await verify_user(u_name, pw);
+        res.status(200).send(result);
+    });
+
+    app.post("/api/sign_up_request",async (req, res) => {
+        const { u_name, pw } = req.body;
+        console.log("Process sign up request... ");
+        console.log(`request body: ${JSON.stringify(req.body)}\n`);
+        const result = await add_user(u_name, pw);
         res.status(200).send(result);
     });
 

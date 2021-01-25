@@ -6,8 +6,7 @@ import { withRouter } from 'react-router-dom';
 class Header extends Component {
     state = {
         isAuthed: this.props.isAuthed,
-        userName: 'DAOKOasdfasdf',
-        //userName: this.props.userName,
+        username: this.props.username,
     }
     redirect_login = () => {
         this.props.history.push('/login');
@@ -18,13 +17,34 @@ class Header extends Component {
         window.location.reload();
     }
 
-    redirect_user_page= ()=>{
-        const {userName} =this.state;
-        this.props.history.push(`/user/${userName}`);
+    redirect_user_page = () => {
+        const { userName } = this.state;
+        this.props.history.push(`/user`);
+    }
+
+    componentDidUpdate(prevState) {
+        const session = sessionStorage.getItem('token');
+        const { isAuthed: wasAuthed, ...rest } = prevState;
+        // console.log(`componentdidupdate.wasAuthed: ${wasAuthed} and session: ${session}`);
+        //will update username and display it.
+        if (session && !wasAuthed) { //update header immediately after login 
+            // console.log("this called");
+            const token = JSON.parse(session);
+            this.setState(token); //update both username and isAuth from token
+        } else if (!session && wasAuthed) { //update header after log out
+            this.setState({ isAuthed: false });
+        }
+    }
+    componentDidMount() {
+        const session = sessionStorage.getItem('token');
+        if (session) {
+            const token = JSON.parse(session);
+            this.setState(token);
+        }
     }
 
     render() {
-        const { isAuthed, userName} = this.state;
+        const { isAuthed, username } = this.state;
         return (
             <div className='flex_container' id='header'>
                 <div className='wrapper' id='refresh_icon_wrapper'>
@@ -37,7 +57,7 @@ class Header extends Component {
                     />
                 </div>
                 <h1 className='wrapper' id='web_title'>MovieApp</h1>
-                {isAuthed ? <div className='wrapper' id="user_page_redirect_wrapper" onClick={this.redirect_user_page}>Hi, {userName} </div> :
+                {isAuthed ? <div className='wrapper' id="user_page_redirect_wrapper" onClick={this.redirect_user_page}>Hi, {username} </div> :
                     <div className='wrapper' id='login_wrapper' onClick={this.redirect_login}> login </div>}
             </div>
         );
