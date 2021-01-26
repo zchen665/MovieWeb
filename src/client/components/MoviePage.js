@@ -9,6 +9,7 @@ class MoviePage extends React.Component {
             info: null,
             loading: false,
             error_msg: "",
+            movie_id: null,
             isAuthed: this.props.isAuthed,
             username: this.props.username,
             warning: ""
@@ -32,7 +33,7 @@ class MoviePage extends React.Component {
                 throw new Error(`HTTP error! status: ${res.status}`); //exit when fail to retrieve
             }
             movie_info = await res.json();
-            const { Response, Search, Error, totalResults } = movie_info;
+            const { Error } = movie_info;
             if (Error) error_msg = Error;
 
         } catch (error) {
@@ -41,7 +42,8 @@ class MoviePage extends React.Component {
             this.setState({
                 loading: false,
                 error_msg: error_msg,
-                info: movie_info
+                info: movie_info,
+                movie_id: error_msg ? null : movie_id //only stores omdb-trievable movie_id
             });
         }
     }
@@ -49,7 +51,7 @@ class MoviePage extends React.Component {
     handle_add_movie = async (e) => {
         e.preventDefault();
 
-        const { isAuthed, username } = this.state;
+        const { isAuthed, username, movie_id } = this.state;
 
         if (isAuthed) {
             console.log("add movie");
@@ -59,11 +61,12 @@ class MoviePage extends React.Component {
                 method: 'POST',
                 mode: "cors",
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ u_id: username, movie_id: useranme })
+                body: JSON.stringify({ u_id: username, movie_id: movie_id })
             });
 
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            this.setState({ warning: "Movie added." });
+            const { status, message } = await res.json();
+            // await new Promise(resolve => setTimeout(resolve, 1000));
+            this.setState({ warning: message });
 
 
         } else {
@@ -80,7 +83,7 @@ class MoviePage extends React.Component {
     }
 
     componentDidMount() {
-        let movie_id = this.props.match.params.movie_id;
+        const movie_id = this.props.match.params.movie_id;
         // console.log(`inside moviepage: movie_info: ${movie_id}`);
         this.get_movie_info(movie_id);
         this.get_token();

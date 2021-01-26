@@ -6,24 +6,27 @@ module.exports = (app) => {
     app.post("/api/login_request", async (req, res) => {
         const { u_name, pw } = req.body;
         console.log("Process login request...");
-        console.log(`request body: ${JSON.stringify(req.body)}\n`);
+        console.log(`request body: ${JSON.stringify(req.body)}`);
         const result = await verify_user(u_name, pw);
+        console.log(`query result: ${result.message}\n`)
         res.status(200).send(result);
     });
 
     app.post("/api/sign_up_request", async (req, res) => {
         const { u_name, pw } = req.body;
         console.log("Process sign up request... ");
-        console.log(`request body: ${JSON.stringify(req.body)}\n`);
+        console.log(`request body: ${JSON.stringify(req.body)}`);
         const result = await add_user(u_name, pw);
+        console.log(`query result: ${result.message}\n`)
         res.status(200).send(result);
     });
 
     app.post("/api/add_movie", async (req, res) => {
-        const { u_i, movie_id } = req.body;
+        const { u_id, movie_id } = req.body;
         console.log("Process add movie request");
-        console.log(`request body: ${JSON.stringify(req.body)}\n`);
+        console.log(`request body: ${JSON.stringify(req.body)}`);
         const result = await add_movie(u_id, movie_id);
+        console.log(`query result: ${result.message}\n`)
         res.status(200).send(result);
     });
 
