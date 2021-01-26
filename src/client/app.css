@@ -3,7 +3,6 @@ html{
   min-height: 100vh;
 }
 
-
 body {
   font-family: "Times New Roman", Times, serif;
   text-align: center;
@@ -11,10 +10,6 @@ body {
   background-color: rgb(244, 255, 255);
 }
 
-#web_content{
-}
-
-/* footer */
 footer{
   position: absolute;
   text-align: center;

@@ -8,7 +8,10 @@ class MoviePage extends React.Component {
         this.state = {
             info: null,
             loading: false,
-            error_msg: ""
+            error_msg: "",
+            isAuthed: this.props.isAuthed,
+            username: this.props.username,
+            warning: ""
         };
     }
 
@@ -43,21 +46,55 @@ class MoviePage extends React.Component {
         }
     }
 
+    handle_add_movie = async (e) => {
+        e.preventDefault();
+
+        const { isAuthed, username } = this.state;
+
+        if (isAuthed) {
+            console.log("add movie");
+            await this.setState({ warning: "Adding..." });
+
+            const res = await fetch('/api/add_movie', {
+                method: 'POST',
+                mode: "cors",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ u_id: username, movie_id: useranme })
+            });
+            
+
+        } else {
+            this.setState({ warning: "Please login first." });
+        }
+    }
+
+    get_token = () => {
+        const session = sessionStorage.getItem('token');
+        if (session) {
+            const token = JSON.parse(session);
+            this.setState(token);
+        }
+    }
+
     componentDidMount() {
         let movie_id = this.props.match.params.movie_id;
         // console.log(`inside moviepage: movie_info: ${movie_id}`);
         this.get_movie_info(movie_id);
+        this.get_token();
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps, prevState) {
         const cur_movie_id = this.props.match.params.movie_id;
         if (prevProps.match.params.movie_id !== cur_movie_id) {
             this.get_movie_info(cur_movie_id);
         }
+        if (!prevState.isAuthed) {
+            this.get_token();
+        }
     }
 
     render() {
-        const { loading, error_msg, info } = this.state;
+        const { loading, error_msg, info, warning } = this.state;
         const { Title, Year, Poster, Genre, Plot, Actors, Director } = info ? info :
             [null, null, null, null, null, null, null];
         //note: onselect should do nothing here
@@ -66,7 +103,13 @@ class MoviePage extends React.Component {
                 {loading ? <h3>Loading.. please wait!</h3> :
                     error_msg ? <h3>{`Sorry ${error_msg}`}</h3> :
                         <div className="flex_container_col" id="movie_display_container">
-                            <Movie poster={Poster} year={Year} title={Title} onselect={() => ""} />
+                            <div className="wrapper">
+                                <Movie poster={Poster} year={Year} title={Title} onselect={() => ""} />
+                                <div>
+                                    <button onClick={this.handle_add_movie}>Add to list</button>
+                                    {warning ? <h5>{warning}</h5> : null}
+                                </div>
+                            </div>
                             <dl className="flex_container" id="movie_display_details">
                                 <dt>Genre:</dt>      <dd>{Genre ? Genre : "N/A"}</dd>
                                 <dt>Directors:</dt>  <dd>{Director ? Director : "N/A"}</dd>
