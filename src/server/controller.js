@@ -30,6 +30,17 @@ module.exports = (app) => {
         res.status(200).send(result);
     });
 
+    //double check http method. not sure if this should be a post or get
+    app.post("/api/get_movies", async (req, res) => {
+        const { u_id } = req.body;
+        console.log("Process get user movie list request");
+        console.log(`request body: ${JSON.stringify(req.body)}`);
+        const result = await get_all_movies(u_id);
+        console.log(`query result: ${result.message}\n`)
+        res.status(200).send(result);
+    });
+
+
     app.get("/api/test", async (req, res) => {
         res.send("inside test.");
     });
