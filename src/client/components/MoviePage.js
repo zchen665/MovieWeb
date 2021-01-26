@@ -61,7 +61,10 @@ class MoviePage extends React.Component {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ u_id: username, movie_id: useranme })
             });
-            
+
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            this.setState({ warning: "Movie added." });
+
 
         } else {
             this.setState({ warning: "Please login first." });

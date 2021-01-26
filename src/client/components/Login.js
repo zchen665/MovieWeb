@@ -18,8 +18,10 @@ class Login extends React.Component {
     }
 
     handle_onchange = (e) => {
-        this.setState({ [e.target.name]: e.target.value,
-        message: "" })
+        this.setState({
+            [e.target.name]: e.target.value,
+            message: ""
+        })
     };
 
     handle_submit = async (e) => {
@@ -58,11 +60,12 @@ class Login extends React.Component {
             });
         }
     };
-    
+
 
     componentDidUpdate() {
         const { isAuthed } = this.state;
-        if (isAuthed) this.props.history.push('/user');
+        if (isAuthed) this.props.history.goBack(); //redirect back to the page where the 
+        //user tries to login
     }
 
 

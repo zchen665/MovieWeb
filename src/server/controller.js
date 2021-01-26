@@ -11,11 +11,19 @@ module.exports = (app) => {
         res.status(200).send(result);
     });
 
-    app.post("/api/sign_up_request",async (req, res) => {
+    app.post("/api/sign_up_request", async (req, res) => {
         const { u_name, pw } = req.body;
         console.log("Process sign up request... ");
         console.log(`request body: ${JSON.stringify(req.body)}\n`);
         const result = await add_user(u_name, pw);
+        res.status(200).send(result);
+    });
+
+    app.post("/api/add_movie", async (req, res) => {
+        const { u_i, movie_id } = req.body;
+        console.log("Process add movie request");
+        console.log(`request body: ${JSON.stringify(req.body)}\n`);
+        const result = await add_movie(u_id, movie_id);
         res.status(200).send(result);
     });
 
