@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import Header from './components/Header.js';
 import { Search } from './components/Search.js';
 import Movie from './components/Movie.js';
-import { PageNav } from './components/PageNav.js';
 import MoviePage from './components/MoviePage.js';
-import { BrowserRouter, Route, Switch, withRouter } from 'react-router-dom';
+import { BrowserRouter, IndexRoute, Route, Switch, withRouter } from 'react-router-dom';
 import UserPage from './components/UserPage.js';
 import { PrivateRoute } from './components/PrivateRoute.js'
 import Login from './components/Login.js';
 import SignUp from './components/SignUp.js';
+import SearchResult from './components/SearchResult.js'
 
 class App extends Component {
   state = {
@@ -29,36 +29,16 @@ class App extends Component {
     this.setState({ search_val: text });
   };
 
-  //handle the event when a movie is selected for 
-  //detailed report 
-  handle_movie_select = async (movie_id) => {
-    await this.setState({
-      movies: null,
-      loading: true,
-      error_msg: null
-    });
-    try {
-      const res = await fetch(`http://www.omdbapi.com/?i=${movie_id}&apikey=5d37056f`);
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`); //exit when fail to retrieve
-      }
-      const movie_info = await res.json();
-      this.setState({
-        display_movie_page: true,
-        target_movie_info: movie_info,
-      });
 
-      this.props.history.push(`/movie_detail/id=${movie_id}`);
+  // get_movie_page = async () => {
 
-    } catch (error) {
-      this.setState({ error_msg: error.message + ", Check Internet connection" });
-    } finally {
-      this.setState({
-        loading: false,
-      });
-      
-    }
-  }
+  //   const movie_id = this.props.match.params.movie_id;
+  //   if (movie_id == undefined) return <p>{""}</p>;
+
+  //   console.log("inside get_movie_page. movie_id is: ", movie_id);
+  //   await this.handle_movie_select(movie_id);
+  //   return <MoviePage movie_info={target_movie_info} />
+  // }
 
 
 
@@ -74,7 +54,7 @@ class App extends Component {
         Search.map((movie, i) => {
           const { Title, Year, Poster, imdbID } = movie;
           const movie_id = `movie${i}`;
-          return <Movie onselect={this.handle_movie_select} key={movie_id} id={imdbID} title={Title} year={Year} poster={Poster} />
+          return <Movie key={movie_id} id={imdbID} title={Title} year={Year} poster={Poster} />
         }) : null;
 
       this.setState({
@@ -85,40 +65,35 @@ class App extends Component {
       //clear Error Warning (from previous api access)
     }
   };
-  //test funciton  used for delay some process
-  sleep(ms) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    });
-  }
+
   //when search btn clicked search with search_val 
   //access api using fetch 
-  handle_submit = () => {
-    const { cur_page, search_val } = this.state;
+  handle_submit = (page = null, val = null) => {
+    const { cur_page, search_val } = page && val ? { page, val } : this.state;
 
-    //start accessing/loading api
-    this.setState({ loading: true });
-    fetch(`http://www.omdbapi.com/?s=${search_val}&page=${cur_page}&apikey=5d37056f`)
-      .then(res => {
-        if (!res.ok) {//handle http failures
-          throw new Error(`HTTP error! status: ${res.status}`);
-        } else {
-          return res.json();
-        }
-      })
-      .then(this.handle_data)
-      .catch(error => {//also takes care of internet errors
-        this.setState({ error_msg: error.message + ", Check Internet connection" });
-      })
-      .finally(() => {
-        this.setState({
-          loading: false,
-          display_movie_page: false,
-        });
+    // //start accessing/loading api
+    // this.setState({ loading: true, cur_page: cur_page, search_val: search_val });
+    // fetch(`http://www.omdbapi.com/?s=${search_val}&page=${cur_page}&apikey=5d37056f`)
+    //   .then(res => {
+    //     if (!res.ok) {//handle http failures
+    //       throw new Error(`HTTP error! status: ${res.status}`);
+    //     } else {
+    //       return res.json();
+    //     }
+    //   })
+    //   .then(this.handle_data)
+    //   .catch(error => {//also takes care of internet errors
+    //     this.setState({ error_msg: error.message + ", Check Internet connection" });
+    //   })
+    //   .finally(() => {
+    //     this.setState({
+    //       loading: false,
+    //       display_movie_page: false,
+    //     });
 
-        //directs to new page
-        this.props.history.push(`/search?${search_val}&page=${cur_page}`);
-      });
+    //     //directs to new page
+    this.props.history.push(`/search=${search_val}/page=${cur_page}`);
+    // });
   };
 
   //handle page change request( nextpage etc.)
@@ -146,6 +121,7 @@ class App extends Component {
     }
   }
 
+
   //this will update the authentication token and then pass isAuthed state to
   //the Header component. therefore Header's isAuthed state directly inherits from
   // the App component.
@@ -167,26 +143,15 @@ class App extends Component {
         <Switch>
           <Route exact path='/login'><Login login_request={this.handle_log_inout} /> </Route>
           <Route exact path='/sign_up'><SignUp login_request={this.handle_log_inout} /></Route>
-          <Route path='/'>
+          <Route path={'/' || '/search=:search_val/'}>
             <div className="flex_container_col">
               <div id="web_content">
-                {/* <Header refresh_page={this.handle_refresh} /> */}
                 <Search textchange={this.handle_textChange} onsearch={this.handle_submit} />
-                {/* this following block determines whether to show the loading phrase or display
-          movie search results. */}
-                {loading ? <h3>Loading.. please wait!</h3> :
-                  error_msg ? <h3>{`Sorry ${error_msg}`}</h3> :
-                    display_movie_page ? <Route path='/movie_detail/'><MoviePage movie_info={target_movie_info} /></Route> :
-                      <div id="movie_section">{movies}</div>}
-                {!display_movie_page ?
-                  loading ? "" :
-                    error_msg ? "" :
-                      movies ? <PageNav change_page={this.handle_page_change} cur_page={cur_page} total_page={total_page} /> : ""
-                  : ""
-                }
-              </div>
 
-              <footer><p>Based on omdb api</p></footer>
+                <Route exact path='/movie_id=:movie_id'><MoviePage /></Route>
+                <Route exact path='/search=:search_val/page=:cur_page'><SearchResult /></Route>
+
+              </div>
             </div>
           </Route >
 

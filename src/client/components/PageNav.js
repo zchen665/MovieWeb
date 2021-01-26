@@ -15,7 +15,7 @@ class NavBtn extends React.Component {
     }
 
     handle_onclick() {
-        const { content} = this.state;
+        const { content } = this.state;
         this.props.onClick(content);//passing to parent
     }
 
@@ -61,7 +61,8 @@ class PageNav extends React.Component {
                 }
                 else {
                     for (let i = 0; i < 5; i += 1) {
-                        btns.push(cur_page + i - 2);
+                        btns.push(parseInt(cur_page) + i - 2);//cur_page passed in from higher component 
+                        //seems to be of string type
                     }
                 }
             }
@@ -81,10 +82,10 @@ class PageNav extends React.Component {
 
         return (
             <div className="page_navigator" >
-                {btn_list()} 
+                {btn_list()}
             </div>
         );
     }
 }
 
-export { PageNav };
+export default PageNav;

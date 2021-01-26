@@ -1,6 +1,7 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 import no_poster from '../img/no_poster.png';
-export default class Movie extends React.Component {
+class Movie extends React.Component {
     state = {
         poster: this.props.poster,
         title: this.props.title,
@@ -8,9 +9,12 @@ export default class Movie extends React.Component {
         id: this.props.id
     }
     //pass this movie component's id to parent for check movid detail
-    handle_onclick = () =>{
-        const{id} = this.state;
-        this.props.onselect(id);
+    handle_onclick = () => {
+        //if in MoviePage ignore onClick.
+        if(this.props.match.params.movie_id) return;
+
+        const { id } = this.state;
+        this.props.history.push(`/movie_id=${id}`);
     }
 
     render() {
@@ -30,3 +34,5 @@ export default class Movie extends React.Component {
         );
     }
 }
+
+export default withRouter(Movie);

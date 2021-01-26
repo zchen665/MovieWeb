@@ -1,23 +1,26 @@
+html{
+  position: relative;
+  min-height: 100vh;
+}
+
 
 body {
   font-family: "Times New Roman", Times, serif;
   text-align: center;
-  margin: auto;
+  padding-bottom: 20px;
   background-color: rgb(244, 255, 255);
 }
 
 #web_content{
-  position: relative;
-  height: calc(100vh - 5vh - 60px);
-  margin: auto;
 }
 
 /* footer */
 footer{
+  position: absolute;
   text-align: center;
-  margin-top: 1vh;
-  height: 4vh;
-  position: relative;
+  width: 100vw;
+  height: 50px;
+  bottom: 0;
   font-family: 'Courier New', Courier, monospace;
 }
 
