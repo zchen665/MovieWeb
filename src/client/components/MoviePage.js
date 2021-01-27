@@ -1,7 +1,12 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import Movie from './Movie.js'
+
 class MoviePage extends React.Component {
+    //for class component this is bad practice.
+    is_active = true; //for clean up in class component;
+    abort_ctrl = new AbortController();
+
     constructor(props) {
         super(props);
         this.state = {
@@ -38,22 +43,21 @@ class MoviePage extends React.Component {
         } catch (error) {
             error_msg = error.message + ", Check Internet connection";
         } finally {
-            this.setState({
-                loading: false,
-                error_msg: error_msg,
-                info: movie_info,
-                movie_id: error_msg ? null : movie_id //only stores omdb-trievable movie_id
-            });
+            if (this.is_active)
+                this.setState({
+                    loading: false,
+                    error_msg: error_msg,
+                    info: movie_info,
+                    movie_id: error_msg ? null : movie_id //only stores omdb-trievable movie_id
+                });
         }
     }
 
     handle_add_movie = async (e) => {
         e.preventDefault();
-
         const { isAuthed, username, movie_id } = this.state;
 
         if (isAuthed) {
-            console.log("add movie");
             await this.setState({ warning: "Adding..." });
 
             const res = await fetch('/api/add_movie', {
@@ -64,11 +68,11 @@ class MoviePage extends React.Component {
             });
 
             const { message } = await res.json();
-            // await new Promise(resolve => setTimeout(resolve, 1000));
-            this.setState({ warning: message });
+            await new Promise(resolve => setTimeout(resolve, 3000));
+            this.is_active ? this.setState({ warning: message }) : null;
 
         } else {
-            this.setState({ warning: "Please login first." });
+            this.is_active ? this.setState({ warning: "Please login first." }) : null;
         }
     }
 
@@ -95,6 +99,10 @@ class MoviePage extends React.Component {
         if (!prevState.isAuthed) {
             this.get_token();
         }
+    }
+    componentWillUnmount() {
+        this.is_active = false;
+        this.abort_ctrl.abort();
     }
 
     render() {

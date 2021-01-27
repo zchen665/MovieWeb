@@ -57,10 +57,11 @@ const MovieRow = (props) => {
 
             const data = await res.json();
             if (data && data.status == 1) {
-                props.on_remove();
+                props.on_remove(props.movie_id);
             } else throw new Error(data ? data.message : "No data retrived from server");
         } catch (err) {
-            set_button_feedback(err.message);
+            // set_button_feedback(err.message);
+            console.log(err)
         }
     }
 

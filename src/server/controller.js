@@ -36,6 +36,7 @@ module.exports = (app) => {
         console.log("Process get user movie list request");
         console.log(`request body: ${JSON.stringify(req.body)}`);
         const result = await get_all_movies(u_id);
+        console.log(result.data);
         console.log(`query result: ${result.message}\n`)
         res.status(200).send(result);
     });
