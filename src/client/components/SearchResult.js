@@ -65,9 +65,6 @@ class SearchResult extends React.Component {
                 this.setState({
                     loading: false
                 });
-                // console.log('total_page: ',this.state.total_page);
-                //directs to new page
-                // this.props.history.push(`/search=${search_val}/page=${cur_page}`);
             });
     };
 

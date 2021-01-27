@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
+import MovieRow from './MovieRow';
 
 
 //For learning purpose this component will be functional
@@ -40,7 +41,11 @@ const UserPage = (props) => {
                 console.log("db returned -1 for status")
                 set_warning(message);
             } else if (movie_id_list) {
-                set_movie_list(movie_id_list);
+                const movie_rows = movie_id_list.map((movie_id, index) => {
+                    return <MovieRow key={index} movie_id={movie_id} />
+                })
+
+                set_movie_list(movie_rows);
                 set_warning("");
             }
 
