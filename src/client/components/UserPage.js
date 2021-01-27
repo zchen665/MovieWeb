@@ -8,6 +8,9 @@ const UserPage = (props) => {
     const [movie_list, set_movie_list] = useState(null);
     const [loading, set_loading] = useState(false);
     const [warning, set_warning] = useState("");
+    // const [display_list, set_display_list] = useState([]);
+
+
 
     const get_username = async () => {
         const session = sessionStorage.getItem('token');
@@ -36,15 +39,16 @@ const UserPage = (props) => {
 
             const response = await res.json();
             const { message, status, data: movie_id_list } = response;
-            console.log(response);
+
             if (status == -1) {//retrive failed.
-                console.log("db returned -1 for status")
                 set_warning(message);
             } else if (movie_id_list) {
+
                 const movie_rows = movie_id_list.map((movie_id, index) => {
-                    return <MovieRow key={index} movie_id={movie_id} />
+                    return <MovieRow key={index} movie_id={movie_id} username={props.username} on_remove={handle_remove} />
                 })
 
+                // set_display_list(movie_id_list);
                 set_movie_list(movie_rows);
                 set_warning("");
             }
@@ -54,7 +58,6 @@ const UserPage = (props) => {
         } finally {
             set_loading(false);
         }
-
     }
 
     useEffect(() => {
@@ -62,6 +65,17 @@ const UserPage = (props) => {
 
         return () => console.log("unmounting");
     }, []);
+
+    const handle_remove = () => {
+        // console.log(movie_list);
+        // const idx_to_remove = display_list.indexOf(id);
+        // console.log("index to remove: ", idx_to_remove)
+        get_movie_list();
+    }
+
+    // useEffect(()=>{
+
+    // }, [movie_rows]);
 
     const handle_log_out = (e) => {
         const status = -1; //-1 for logging out in app.js handle_log_inout handler

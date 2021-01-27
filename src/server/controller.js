@@ -40,6 +40,16 @@ module.exports = (app) => {
         res.status(200).send(result);
     });
 
+    app.delete("/api/remove_movie", async (req, res) => {
+        const { u_id, movie_id } = req.body;
+        console.log("Process remove movie request");
+        console.log(`request body: ${JSON.stringify(req.body)}`);
+        const result = await remove_movie(u_id, movie_id);
+        // const result = {gg: "gggggggg"};
+        console.log(`query result: ${result.message}\n`)
+        res.status(200).send(result);
+    });
+
 
     app.get("/api/test", async (req, res) => {
         res.send("inside test.");

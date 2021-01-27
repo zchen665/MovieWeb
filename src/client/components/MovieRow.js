@@ -8,6 +8,7 @@ const MovieRow = (props) => {
     const [year, set_year] = useState(null);
     const [warning, set_warning] = useState("");
     const [loading, set_loading] = useState(false);
+    const [button_feedback, set_button_feedback] = useState("");
 
     const get_movie_info = async () => {
         set_loading(true);
@@ -38,19 +39,46 @@ const MovieRow = (props) => {
         get_movie_info();
     }, []);
 
+    //will not redirect if any warning given 
+    //which covers cases for invalid movie id
     const redirect = () => {
-        props.history.push(`/movie_id=${props.movie_id}`);
+        if (!warning)
+            props.history.push(`/movie_id=${props.movie_id}`);
+    }
+
+    const remove_movie = async () => {
+        set_button_feedback("");
+        try {
+            const res = await fetch('/api/remove_movie', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ u_id: props.username, movie_id: props.movie_id })
+            })
+
+            const data = await res.json();
+            if (data && data.status == 1) {
+                props.on_remove();
+            } else throw new Error(data ? data.message : "No data retrived from server");
+        } catch (err) {
+            set_button_feedback(err.message);
+        }
     }
 
     return (
-        <div className='movie_row' onClick={redirect}>
+        <div className='movie_row'>
             {
                 loading ? <h4>loading...</h4> :
                     warning ? <h4>{warning}</h4> :
                         <div className='flex_container row_narrow_wrapper'>
-                            <img className='small_img' src={poster == "N/A" ? no_poster : poster} />
-                            <h4>Title: {title}</h4>
-                            <h4>Year: {year}</h4>
+                            <div onClick={redirect} className='flex_container'>
+                                <img className='small_img' src={poster == "N/A" ? no_poster : poster} />
+                                <h4>Title: {title}</h4>
+                                <h4>Year: {year}</h4>
+                            </div>
+                            <div className='flex_container_col'>
+                                <p>{button_feedback}</p>
+                                <button onClick={remove_movie}>Remove</button>
+                            </div>
                         </div>
             }
         </div>);

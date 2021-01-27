@@ -4,7 +4,6 @@ import Movie from './Movie.js'
 class MoviePage extends React.Component {
     constructor(props) {
         super(props);
-        console.log("inside constructor");
         this.state = {
             info: null,
             loading: false,
@@ -64,10 +63,9 @@ class MoviePage extends React.Component {
                 body: JSON.stringify({ u_id: username, movie_id: movie_id })
             });
 
-            const { status, message } = await res.json();
+            const { message } = await res.json();
             // await new Promise(resolve => setTimeout(resolve, 1000));
             this.setState({ warning: message });
-
 
         } else {
             this.setState({ warning: "Please login first." });
