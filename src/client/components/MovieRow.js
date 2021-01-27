@@ -10,6 +10,8 @@ const MovieRow = (props) => {
     const [loading, set_loading] = useState(false);
     const [button_feedback, set_button_feedback] = useState("");
 
+    let is_active = true;
+
     const get_movie_info = async () => {
         set_loading(true);
         try {
@@ -19,8 +21,8 @@ const MovieRow = (props) => {
             }
             const data = await res.json();
             const { Error, Response } = data;
-            if (Error && !Response) { set_warning(Error); }
-            else {
+            if (Error && !Response && is_active) { set_warning(Error); }
+            else if (is_active) {
                 const { Year, Poster, Title } = data;
                 set_year(Year);
                 set_poster(Poster);
@@ -28,15 +30,17 @@ const MovieRow = (props) => {
                 set_warning("");
             }
         } catch (err) {
-            set_warning(err.message);
+            is_active ? set_warning(err.message) : null;
         } finally {
-            set_loading(false);
+            is_active ? set_loading(false) : null;
         }
     }
 
 
     useEffect(() => {
         get_movie_info();
+
+        return () => is_active = false;
     }, []);
 
     //will not redirect if any warning given 
@@ -60,8 +64,8 @@ const MovieRow = (props) => {
                 props.on_remove(props.movie_id);
             } else throw new Error(data ? data.message : "No data retrived from server");
         } catch (err) {
-            // set_button_feedback(err.message);
-            console.log(err)
+            console.log(err.message)
+            is_active ? set_button_feedback(err.message) : null;
         }
     }
 

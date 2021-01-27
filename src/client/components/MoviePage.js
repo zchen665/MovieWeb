@@ -68,7 +68,7 @@ class MoviePage extends React.Component {
             });
 
             const { message } = await res.json();
-            await new Promise(resolve => setTimeout(resolve, 3000));
+            // await new Promise(resolve => setTimeout(resolve, 3000));
             this.is_active ? this.setState({ warning: message }) : null;
 
         } else {
