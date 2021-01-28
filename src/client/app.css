@@ -271,17 +271,6 @@ dl>dd{
   cursor: pointer;
 }
 
-.submit_btn::after, .submit_btn::before{
-  content: "ghg";
-  top: 0;
-  left: 0;
-  position: absolute;
-  display: block;
-  background-color: rgb(73, 109, 73, 0.8);
-  transform: skewX(-15deg);
-
-}
-
 .submit_btn:hover{
   background-color: rgba(204, 18, 18, 0.5);
 }
@@ -304,7 +293,23 @@ dl>dd{
 
 /* start of userpage  */
 .underline_effect:hover{
+  text-decoration: underline;
+}
+#add_like_btn{
 
+  font-size: larger;
+  border-radius: 5px;
+} 
+#add_like_btn:hover{
+  background-color: rgba(240, 79, 4, 0.3);
+}
+
+#add_like_btn_wrapper{
+  margin-left: 50px;
+}
+
+.dark_font{
+  color: rgb(36, 51, 78);
 }
 
 

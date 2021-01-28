@@ -117,9 +117,13 @@ class MoviePage extends React.Component {
                         <div className="flex_container_col" id="movie_display_container">
                             <div className="wrapper">
                                 <Movie poster={Poster} year={Year} title={Title} onselect={() => ""} />
-                                <div>
-                                    <button onClick={this.handle_add_movie} className="clean_btn underline_effect dark_font">Add to list</button>
-                                    {warning ? <h5>{warning}</h5> : null}
+                                <div id="add_like_btn_wrapper" className="flex_container_col">
+                                    <button
+                                        onClick={this.handle_add_movie}
+                                        className="clean_btn underline_effect dark_font"
+                                        id="add_like_btn"
+                                    >Add to list</button>
+                                    <h5 style={{whiteSpace: 'pre-wrap'}} className='warm_font'>{warning}</h5>
                                 </div>
                             </div>
                             <dl className="flex_container" id="movie_display_details">
