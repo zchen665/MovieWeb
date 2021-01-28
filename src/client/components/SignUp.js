@@ -86,6 +86,7 @@ class SignUp extends React.Component {
             });
         }
     };
+    const
 
     componentWillUnmount() {
         this.props.change_background(false);
@@ -93,21 +94,21 @@ class SignUp extends React.Component {
 
     render() {
         const { isAuthed, message, loading } = this.state;
+        if (isAuthed) this.props.history.push('/');
         return (
             <div id='signup_container' className="glass_blur_box flex_container_col">
                 <h2 className="warm_font">Sign up</h2>
                 {
-                    isAuthed ? <h3>Please Log out first.</h3> :
-                        <div>
-                            <form onSubmit={this.handle_submit} className='flex_container_col'>
-                                <input name='username' type='text' placeholder='Username' onChange={this.handle_onchange} className='effect_on_focus' />
-                                <input name='password' type='password' placeholder='Password' onChange={this.handle_onchange} className='effect_on_focus' />
-                                <input name='pw_confirm' type='password' placeholder='Confirm Password' onChange={this.handle_onchange} className='effect_on_focus' />
-                                <input type='submit' className="submit_btn" />
-                            </form>
-                            <NavLink to='/login' className='warm_font'> or log in?</NavLink>
-                            {loading ? <p>Processing your request...</p> : <p className='warning'>{message}</p>}
-                        </div>
+                    <div>
+                        <form onSubmit={this.handle_submit} className='flex_container_col'>
+                            <input name='username' type='text' placeholder='Username' onChange={this.handle_onchange} className='effect_on_focus' />
+                            <input name='password' type='password' placeholder='Password' onChange={this.handle_onchange} className='effect_on_focus' />
+                            <input name='pw_confirm' type='password' placeholder='Confirm Password' onChange={this.handle_onchange} className='effect_on_focus' />
+                            <input type='submit' className="submit_btn" />
+                        </form>
+                        <NavLink to='/login' className='warm_font'> or log in?</NavLink>
+                        {loading ? <p>Processing your request...</p> : <p className='warning'>{message}</p>}
+                    </div>
                 }
             </div>
         );

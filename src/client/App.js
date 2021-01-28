@@ -8,7 +8,8 @@ import UserPage from './components/UserPage.js';
 import { PrivateRoute } from './components/PrivateRoute.js'
 import Login from './components/Login.js';
 import SignUp from './components/SignUp.js';
-import SearchResult from './components/SearchResult.js'
+import SearchResult from './components/SearchResult.js';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const IMG_URL = 'https://thumbnails.moviemania.io/phone/movie/129/54091e/670x1192.jpg'
 

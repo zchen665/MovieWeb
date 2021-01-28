@@ -23,7 +23,7 @@ footer{
   position: absolute;
   object-fit: cover;
   object-position: 0 17%;
-  top:60px;
+  top:40px;
   left: 0;
   right: 0;
   width: 100%;
@@ -52,7 +52,7 @@ footer{
   display: flex;
   position: relative;
   border-radius: 10px;
-  padding: 5px 10px;
+  /* padding: 5px 10px; */
   margin: 0 auto;
   justify-content: center;
   align-items: center;
@@ -71,13 +71,19 @@ footer{
   z-index: 50;
   height: 60px;
   width: 100%;
+  min-width: 180px;
+  /* font-size: small; */
   /* border: black 3px solid; */
 }
 
+#header>div{
+  align-self: stretch;
+}
+
 #web_title{
-  position: absolute;
-  margin: 5px auto;
-  padding: 10; 
+  /* border: black 3px solid; */
+  position: relative;
+  margin: auto auto;
 }
 
 #login_wrapper{
@@ -85,6 +91,7 @@ footer{
   margin-right: 1vw;
   color: black;
 }
+
 #user_page_redirect_wrapper{
   font-size: large;
   margin-right: 1vw;
@@ -208,7 +215,6 @@ footer{
 
 /* start of movie detail display css */
 #add_like_btn{
-
   font-size: larger;
   border-radius: 5px;
 } 
@@ -235,7 +241,6 @@ dl > dt{
   margin-top: 20px;
 }
 dl>dd{
-  /* border-bottom: 1px black solid; */
   margin-top: 20px;
   flex-basis: 70vw;
   text-align: left;
@@ -308,19 +313,22 @@ dl>dd{
 /* start of userpage  */
 #user_page_header{
   width: 100%;
+  min-width: 180px;
   height: 40px;
-  margin-bottom: 20px;
+  margin-bottom: 2vh;
+  font-size: larger;
   /* border: black solid thin; */
 }
-#user_page_header > h3{
+
+#user_page_header > h4{
   position: relative;
   left: 5vw;
   margin-right: auto;
-  font-size: larger;
 }
 
 #logout_btn{
-  font-size: larger;
+  height: fit-content;
+  font-size: inherit;
   margin: auto;
   background-color: rgb(0, 80, 145,0.3);
   border-radius: 10px;
@@ -352,7 +360,7 @@ dl>dd{
   background-color: rgb(203, 229, 236);
   border-radius: 15px;
   width: 65vw;
-  min-width: 400px;
+  min-width: min(400px, 100%);
 }
 
 .small_movie_display{
@@ -376,10 +384,9 @@ dl>dd{
   margin: auto;
   right: 2vw;
   position: relative;
-
 }
 .rmv_btn_wrapper>button{
-  margin: auto;
+  right: 0;
   background-color: transparent;
   font-size: larger;
   text-decoration: underline;
@@ -387,6 +394,28 @@ dl>dd{
 .rmv_btn_wrapper>button:hover{
   color: brown;
 }
-
-
 /* end of userpage */
+
+/* responsive */
+@media screen and (max-width:400px) {
+/* resize header */
+  #header, #header *{font-size:medium; height: 40px; } 
+  #refresh_icon {width: 30px; height: auto;}
+
+  /* resize login form */
+  #login_form{width: 100%;}
+  .glass_blur_box{
+    width: 100%;
+    padding: 20px 0;
+  }
+
+  /* movie detail page */
+  #movie_display_container >div{flex-direction: column;}
+  #add_like_btn_wrapper{margin: auto;}
+
+  /* userpage */
+  #user_page_header *{font-size: small; height: 20px; padding: 0 5px;}
+  .row_narrow_wrapper{margin-left: 0; margin-right: 0; padding: 0;}
+  .small_movie_display *{font-size: smaller;}
+  .rmv_btn_wrapper{font-size: x-small;margin-right: 0; margin-left: 5px;}
+}

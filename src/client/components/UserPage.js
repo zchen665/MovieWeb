@@ -92,7 +92,7 @@ const UserPage = (props) => {
     return (
         <div>
             <div id='user_page_header' className="flex_container">
-                <h3>Your movie list:</h3>
+                <h4>Your movie list:</h4>
                 <button
                     onClick={handle_log_out}
                     id='logout_btn'
