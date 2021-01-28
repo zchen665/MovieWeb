@@ -83,7 +83,7 @@ const UserPage = (props) => {
     const handle_log_out = (e) => {
         const status = -1; //-1 for logging out in app.js handle_log_inout handler
         e.preventDefault();
-        
+
         sessionStorage.removeItem('token');
         props.logout_request(status);
         props.history.push('/');
@@ -91,9 +91,13 @@ const UserPage = (props) => {
 
     return (
         <div>
-            <div className="wrapper">
-                <p>Your list:</p>
-                <button onClick={handle_log_out}>Log out</button>
+            <div id='user_page_header' className="flex_container">
+                <h3>Your movie list:</h3>
+                <button
+                    onClick={handle_log_out}
+                    id='logout_btn'
+                    className="clean_btn underline_effect"
+                >Log out</button>
             </div>
             <div>
                 {loading ? <h4>Loading...Please wait.</h4> :

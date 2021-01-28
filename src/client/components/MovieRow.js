@@ -75,14 +75,19 @@ const MovieRow = (props) => {
                 loading ? <h4>loading...</h4> :
                     warning ? <h4>{warning}</h4> :
                         <div className='flex_container row_narrow_wrapper'>
-                            <div onClick={redirect} className='flex_container'>
+                            <div
+                                onClick={redirect}
+                                className='flex_container small_movie_display'
+                            >
                                 <img className='small_img' src={poster == "N/A" ? no_poster : poster} />
-                                <h4>Title: {title}</h4>
-                                <h4>Year: {year}</h4>
+                                <h4> {title}</h4>
+                                <h4> {year}</h4>
                             </div>
-                            <div className='flex_container_col'>
+                            <div className='flex_container_col rmv_btn_wrapper'>
+                                <button onClick={remove_movie}
+                                    className='clean_btn'
+                                >Remove</button>
                                 <p>{button_feedback}</p>
-                                <button onClick={remove_movie}>Remove</button>
                             </div>
                         </div>
             }
