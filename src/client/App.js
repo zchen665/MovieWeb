@@ -10,13 +10,26 @@ import Login from './components/Login.js';
 import SignUp from './components/SignUp.js';
 import SearchResult from './components/SearchResult.js'
 
+const IMG_URL = 'https://thumbnails.moviemania.io/phone/movie/129/54091e/670x1192.jpg'
+
 class App extends Component {
   state = {
     search_val: "",
     isAuthed: false, //authentication will not impact much of this component.
     username: null,
-    cur_page: 1
+    cur_page: 1,
+    show_background: false
   };
+
+  //toggles back ground
+  handle_background = (bool) => {
+    const path = window.location.pathname;
+    //unmount of either Login or SignUp component is triggered later
+    //this will block the toggling in navigation from Login to Signup or
+    //vice versa 
+    if ((path == '/sign_up' || path == '/login') && !bool) return;
+    this.setState({ show_background: bool });
+  }
 
   //get value from search bar text field
   handle_textChange = (text) => {
@@ -38,11 +51,11 @@ class App extends Component {
     const { isAuthed } = this.state;
     if (!isAuthed && status == 1) {
       this.setState({ isAuthed: true });
-      console.log("logged in in app.js");
+      console.log("logged in");
     }
     else if (isAuthed && status == -1) {
       this.setState({ isAuthed: false });
-      console.log("logged out in app.js");
+      console.log("logged out");
     }
   }
 
@@ -60,14 +73,15 @@ class App extends Component {
 
 
   render() {
-    const { username, isAuthed } = this.state;
+    const { username, isAuthed, show_background } = this.state;
     return (
       <div>
+        {show_background && <img className="full_body_background" id='background' src={IMG_URL} />}
         <Header isAuthed={isAuthed} username={username} />
         <Switch>
           <PrivateRoute exact path='/user' component={UserPage} logout_request={this.handle_log_inout} />
-          <Route exact path='/login'><Login login_request={this.handle_log_inout} /> </Route>
-          <Route exact path='/sign_up'><SignUp login_request={this.handle_log_inout} /></Route>
+          <Route exact path='/login'><Login login_request={this.handle_log_inout} change_background={this.handle_background} /> </Route>
+          <Route exact path='/sign_up'><SignUp login_request={this.handle_log_inout} change_background={this.handle_background} /></Route>
           <Route path={'/' || '/search=:search_val/'}>
             <div className="flex_container_col">
               <Search textchange={this.handle_textChange} onsearch={this.handle_submit} />

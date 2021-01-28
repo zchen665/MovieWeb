@@ -13,10 +13,25 @@ body {
 footer{
   position: absolute;
   text-align: center;
-  width: 100vw;
+  width: 100%;
   height: 50px;
   bottom: 0;
   font-family: 'Courier New', Courier, monospace;
+}
+
+.full_body_background{
+  position: absolute;
+  object-fit: cover;
+  object-position: 0 17%;
+  top:60px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  min-height: 600px;
+  height: calc(100vh - 60px);
+  background-image: url(https://thumbnails.moviemania.io/phone/movie/129/54091e/670x1192.jpg);
+  z-index: -1;
+  opacity: 0.7;
 }
 
 .flex_container{
@@ -45,8 +60,9 @@ footer{
 /* Start of Header css */
 #header{
   background-color: rgb(159, 191, 252);
-  z-index: -1;
+  z-index: 50;
   height: 60px;
+  width: 100%;
   /* border: black 3px solid; */
 }
 
@@ -107,6 +123,7 @@ footer{
 #search_textbox:focus{
   border: cornflowerblue 2px solid;
   outline: none;
+  background-color: rgb(218, 218, 218);
 }
 #search_btn{
   width: 40px;
@@ -185,7 +202,6 @@ footer{
 .page_active {
   background-color: rgb(207, 226, 226);
   text-decoration: underline;
-
 }
 /* end of page navigator section */
 
@@ -211,3 +227,65 @@ dl>dd{
   text-align: left;
 }
 /* end of movie detail display css */
+
+/* start of login page css */
+#login_container{
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif ;
+  margin: 10vh auto;
+  padding: 20px;
+  width: 400px;
+  height: 320px;
+  
+  border-radius: 10px;
+  background-color: rgb(36, 35, 35, 0.1);
+  backdrop-filter: blur(4px);
+}
+
+#login_form{
+  width: 300px;
+  /* height: 300px; */
+  /* border: black 3px solid; */
+  
+}
+
+.flex_container_col > input{
+  outline: none;
+  border: none;
+  border-radius: 10px;
+  margin-bottom: 18px;
+  font-size: larger;
+  height: 38px;
+  background-color:rgba(214, 214, 214, 0.7);
+  transition: 0.3s;
+}
+
+.effect_on_focus:focus{
+  background-color: rgba(112, 142, 148, 0.7);
+}
+
+.effect_on_focus:focus::placeholder{
+  color: rgb(230, 230, 230);
+}
+
+.submit_btn{
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.submit_btn::after, .submit_btn::before{
+  content: "ghg";
+  top: 0;
+  left: 0;
+  position: absolute;
+  display: block;
+  background-color: rgb(73, 109, 73, 0.8);
+  transform: skewX(-15deg);
+
+}
+
+.submit_btn:hover{
+  background-color: rgba(204, 18, 18, 0.7);
+}
+
+
+/* end of login page css */

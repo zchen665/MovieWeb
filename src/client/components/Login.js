@@ -15,6 +15,9 @@ class Login extends React.Component {
             isAuthed: token ? token.isAuthed : false,
             message: ""
         }
+
+        //show background img
+        this.props.change_background(true);
     }
 
     handle_onchange = (e) => {
@@ -61,28 +64,31 @@ class Login extends React.Component {
         }
     };
 
-
     componentDidUpdate() {
         const { isAuthed } = this.state;
         if (isAuthed) this.props.history.goBack(); //redirect back to the page where the 
         //user tries to login
     }
 
+    componentWillUnmount() {
+        this.props.change_background(false);
+    }
 
     render() {
         const { message } = this.state;
         return (
-            <div>
-                <h2>Log in</h2>
-                <form onSubmit={this.handle_submit} >
-                    <input name='username' type='text' placeholder='Username' onChange={this.handle_onchange} />
-                    <input name='password' type='password' placeholder='Password' onChange={this.handle_onchange} />
-                    <input type='submit' />
+            <div id='login_container' className='flex_container_col'>
+                <h2>Welcome</h2>
+                <form onSubmit={this.handle_submit} id='login_form' className='flex_container_col'>
+                    <input type='text' placeholder='Username' onChange={this.handle_onchange} className='effect_on_focus' />
+                    <input type='password' placeholder='Password' onChange={this.handle_onchange} className='effect_on_focus' />
+                    <input type='submit' className="submit_btn " />
                 </form>
-                <p>{message}</p>
+                <p style={{ whiteSpace: 'pre-wrap' }}> {` ${message}`}</p>
 
                 <NavLink to='/sign_up'>Sign up</NavLink>
-            </div>
+            </div >
+
         );
 
     }

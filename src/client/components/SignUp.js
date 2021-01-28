@@ -18,6 +18,7 @@ class SignUp extends React.Component {
             pw_confirm: "",
             loading: false,
         }
+        this.props.change_background(true);
     }
 
     handle_onchange = (e) => {
@@ -75,6 +76,10 @@ class SignUp extends React.Component {
             });
         }
     };
+
+    componentWillUnmount() {
+        this.props.change_background(false);
+    }
 
     render() {
         const { isAuthed, message, loading } = this.state;
