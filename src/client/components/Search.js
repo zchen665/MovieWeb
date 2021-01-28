@@ -25,7 +25,7 @@ class Search extends Component {
                         onChange={this.handle_text_change}
                         placeholder="Search Something"
                     />
-                    <button id='search_btn' onClick= {this.handle_onsubmit}><i className="fas fa-search fa-lg"></i> </button>
+                    <button id='search_btn' className="clean_btn" onClick= {this.handle_onsubmit}><i className="fas fa-search fa-lg"></i> </button>
                 </form>
             </div>
         );

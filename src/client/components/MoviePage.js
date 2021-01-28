@@ -118,7 +118,7 @@ class MoviePage extends React.Component {
                             <div className="wrapper">
                                 <Movie poster={Poster} year={Year} title={Title} onselect={() => ""} />
                                 <div>
-                                    <button onClick={this.handle_add_movie}>Add to list</button>
+                                    <button onClick={this.handle_add_movie} className="clean_btn underline_effect dark_font">Add to list</button>
                                     {warning ? <h5>{warning}</h5> : null}
                                 </div>
                             </div>

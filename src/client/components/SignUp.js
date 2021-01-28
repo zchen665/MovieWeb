@@ -32,8 +32,18 @@ class SignUp extends React.Component {
     handle_submit = async (e) => {
         e.preventDefault();
         const { password, username, pw_confirm } = this.state;
-        console.log(`un: ${username}, pw: ${password}, pw2: ${pw_confirm}`);
-        if (password !== pw_confirm) {
+        // console.log(`un: ${username}, pw: ${password}, pw2: ${pw_confirm}`);
+        if (username.length == 0) {
+            this.setState({
+                message: "Username can't be empty."
+            });
+            return;
+        } else if (password.length == 0) {
+            this.setState({
+                message: "Password can't be empty."
+            });
+            return;
+        } else if (password !== pw_confirm) {
             this.setState({
                 message: "Passwords must match."
             });
@@ -84,19 +94,21 @@ class SignUp extends React.Component {
     render() {
         const { isAuthed, message, loading } = this.state;
         return (
-            <div>
-                <h2>Sign up</h2>
-                {isAuthed ? <h3>Please Log out first.</h3> :
-                    <div>
-                        <form onSubmit={this.handle_submit} >
-                            <label htmlFor="username">Name: </label>
-                            <input name='username' type='text' placeholder='Username' onChange={this.handle_onchange} />
-                            <input name='password' type='password' placeholder='Password' onChange={this.handle_onchange} />
-                            <input name='pw_confirm' type='password' placeholder='Confirm Password' onChange={this.handle_onchange} />
-                            <input type='submit' />
-                        </form>
-                        {loading ? <p>Processing your request...</p> : <p>{message}</p>}
-                    </div>}
+            <div id='signup_container' className="glass_blur_box flex_container_col">
+                <h2 className="warm_font">Sign up</h2>
+                {
+                    isAuthed ? <h3>Please Log out first.</h3> :
+                        <div>
+                            <form onSubmit={this.handle_submit} className='flex_container_col'>
+                                <input name='username' type='text' placeholder='Username' onChange={this.handle_onchange} className='effect_on_focus' />
+                                <input name='password' type='password' placeholder='Password' onChange={this.handle_onchange} className='effect_on_focus' />
+                                <input name='pw_confirm' type='password' placeholder='Confirm Password' onChange={this.handle_onchange} className='effect_on_focus' />
+                                <input type='submit' className="submit_btn" />
+                            </form>
+                            <NavLink to='/login' className='warm_font'> or log in?</NavLink>
+                            {loading ? <p>Processing your request...</p> : <p className='warning'>{message}</p>}
+                        </div>
+                }
             </div>
         );
 

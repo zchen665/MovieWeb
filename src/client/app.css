@@ -57,6 +57,13 @@ footer{
   align-items: center;
 }
 
+.clean_btn{
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: 0.5s;
+}
+
 /* Start of Header css */
 #header{
   background-color: rgb(159, 191, 252);
@@ -128,13 +135,9 @@ footer{
 #search_btn{
   width: 40px;
   border-radius: 10px;
-  outline: None;
-  border: None;
-  transition: 0.5s;
 }
 #search_btn:hover{
   background-color: rgb(204, 248, 250);
-  cursor: pointer;
 }
 /* End of Search component css */
 
@@ -185,18 +188,15 @@ footer{
 /* end of movie display section */
 
 /* start of page navigator section */
-.nav_btn{
+#nav_btn{
   background-color: rgb(206, 206, 206);
   margin: 1vh 3px;
   width: fit-content;
   padding: 0 12px;
   height: 30px;
-  border: none;
   border-radius: 4px;
-  cursor: pointer;
-  outline: none;
 }
-.nav_btn:hover{
+#nav_btn:hover{
   background-color: rgb(161, 165, 165);
 }
 .page_active {
@@ -229,7 +229,7 @@ dl>dd{
 /* end of movie detail display css */
 
 /* start of login page css */
-#login_container{
+.glass_blur_box{
   font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif ;
   margin: 10vh auto;
   padding: 20px;
@@ -243,8 +243,6 @@ dl>dd{
 
 #login_form{
   width: 300px;
-  /* height: 300px; */
-  /* border: black 3px solid; */
   
 }
 
@@ -256,6 +254,7 @@ dl>dd{
   font-size: larger;
   height: 38px;
   background-color:rgba(214, 214, 214, 0.7);
+  color: rgb(75, 52, 42);
   transition: 0.3s;
 }
 
@@ -284,8 +283,30 @@ dl>dd{
 }
 
 .submit_btn:hover{
-  background-color: rgba(204, 18, 18, 0.7);
+  background-color: rgba(204, 18, 18, 0.5);
+}
+
+.warm_font{
+  color:rgba(255, 87, 87, 0.8);
+}
+
+/* end of login page css */
+
+/* for signup page */
+#signup_container{
+  height: 350px;
+}
+
+.warning{
+  color: crimson;
+}
+/* end of signup page */
+
+/* start of userpage  */
+.underline_effect:hover{
+
 }
 
 
-/* end of login page css */
+
+/* end of userpage */

@@ -23,7 +23,7 @@ class NavBtn extends React.Component {
         const { cur_page, content } = this.state;
 
         return (
-            <button className={`nav_btn ${content == cur_page ? " page_active" : ""}`} onClick={this.handle_onclick}>{this.props.content}</button>
+            <button id='nav_btn' className={`clean_btn ${content == cur_page ? " page_active" : ""}`} onClick={this.handle_onclick}>{this.props.content}</button>
         );
     }
 }

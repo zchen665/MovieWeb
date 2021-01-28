@@ -30,6 +30,17 @@ class Login extends React.Component {
     handle_submit = async (e) => {
         e.preventDefault();
         const { username, password } = this.state;
+        if (password.length == 0) {
+            this.setState({
+                message: "Password can't be empty."
+            });
+            return;
+        }else if(username.length==0){
+            this.setState({
+                message: "Username can't be empty."
+            });
+            return;
+        }
 
         try {
             const res = await fetch('/api/login_request', {
@@ -77,16 +88,16 @@ class Login extends React.Component {
     render() {
         const { message } = this.state;
         return (
-            <div id='login_container' className='flex_container_col'>
-                <h2>Welcome</h2>
+            <div id='login_container' className='glass_blur_box flex_container_col'>
+                <h2 className='warm_font'>Welcome</h2>
                 <form onSubmit={this.handle_submit} id='login_form' className='flex_container_col'>
-                    <input type='text' placeholder='Username' onChange={this.handle_onchange} className='effect_on_focus' />
-                    <input type='password' placeholder='Password' onChange={this.handle_onchange} className='effect_on_focus' />
+                    <input name='username' type='text' placeholder='Username' onChange={this.handle_onchange} className='effect_on_focus' />
+                    <input name='password' type='password' placeholder='Password' onChange={this.handle_onchange} className='effect_on_focus'/>
                     <input type='submit' className="submit_btn " />
                 </form>
-                <p style={{ whiteSpace: 'pre-wrap' }}> {` ${message}`}</p>
+                <p className='warning' style={{ whiteSpace: 'pre-wrap' }}> {` ${message}`}</p>
 
-                <NavLink to='/sign_up'>Sign up</NavLink>
+                <NavLink className="warm_font" to='/sign_up'>or sign up?</NavLink>
             </div >
 
         );

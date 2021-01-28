@@ -83,7 +83,7 @@ const UserPage = (props) => {
     const handle_log_out = (e) => {
         const status = -1; //-1 for logging out in app.js handle_log_inout handler
         e.preventDefault();
-        console.log("clicked log out button");
+        
         sessionStorage.removeItem('token');
         props.logout_request(status);
         props.history.push('/');
