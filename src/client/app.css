@@ -51,7 +51,7 @@ footer{
 .wrapper{
   display: flex;
   position: relative;
-  border-radius: 24px;
+  border-radius: 10px;
   padding: 5px 10px;
   margin: 0 auto;
   justify-content: center;
@@ -91,7 +91,6 @@ footer{
 }
 
 #login_wrapper:hover{
-  color: rgb(107, 100, 76);
   text-decoration: underline;
 }
 #refresh_icon_wrapper{
@@ -100,6 +99,7 @@ footer{
 
 #refresh_icon{
   width: 50px;
+  /* color: black; */
   filter: invert(70%) sepia(76%) saturate(309%) hue-rotate(313deg) brightness(50%) contrast(63%);
 }
 

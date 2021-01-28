@@ -50,10 +50,9 @@ class Header extends Component {
                 <div className='wrapper' id='refresh_icon_wrapper'>
                     <img
                         id="refresh_icon"
-                        src={require('../Img/homeIcon.svg')}
+                        src={require('../Img/homeIcon.png')}
                         alt="refresh icon"
                         onClick={this.refresh_page}
-
                     />
                 </div>
                 <h1 className='wrapper' id='web_title'>MovieApp</h1>
