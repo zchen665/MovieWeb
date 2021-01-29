@@ -98,6 +98,8 @@ manually setting up mysql to start the server.
   - there is no security consideration/protection on server. 
 
   - improving css structuring and naming: need to adopt BEM for more efficient css coding. 
+  
+  - standard testing with Jest etc.
 
   - and more coming.
 
