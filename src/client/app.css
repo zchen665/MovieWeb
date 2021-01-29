@@ -410,7 +410,7 @@ dl>dd{
   #search_textbox{width: calc(100vw - 60px);}
 
   /* resize login form */
-  #login_form{width: 100%;}
+  #login_form,#sign_up_form{width: 96%;}
   .glass_blur_box{
     width: 100%;
     padding: 20px 0;

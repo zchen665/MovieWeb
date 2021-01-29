@@ -100,7 +100,7 @@ class SignUp extends React.Component {
                 <h2 className="warm_font">Sign up</h2>
                 {
                     <div>
-                        <form onSubmit={this.handle_submit} className='flex_container_col'>
+                        <form onSubmit={this.handle_submit} className='flex_container_col' id='sign_up_form'>
                             <input name='username' type='text' placeholder='Username' onChange={this.handle_onchange} className='effect_on_focus' />
                             <input name='password' type='password' placeholder='Password' onChange={this.handle_onchange} className='effect_on_focus' />
                             <input name='pw_confirm' type='password' placeholder='Confirm Password' onChange={this.handle_onchange} className='effect_on_focus' />
