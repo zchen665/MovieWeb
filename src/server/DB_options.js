@@ -1,6 +1,6 @@
 const mysql = require('mysql2/promise');
 const { util } = require('webpack');
-const [admin_user, admin_host, admin_pw, db_name] = ['root', 'localhost', '12580@Czz', 'mv_app'];
+const [admin_user, admin_host, admin_pw, db_name] = ['root', 'localhost', '12345', 'mv_app'];
 const db_config = {
     host: admin_host,
     user: admin_user,
