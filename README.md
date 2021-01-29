@@ -24,7 +24,7 @@
 #
 <h2 id='about-the-project'> About the Project: </h2>
 
-  This is a basic movie-browsing website to get myself familiar with front-end and back-end development. This web allows client to search movies based on keyword, login, sign up, and add/remove movies to user's list after login.
+  This is a basic movie-browsing website to get myself familiar with front-end and back-end development. This web allows client to search movies based on keyword, login, sign up, and add/remove movies to client's list with authentication.
 
 
 - <h3 id='built-with'>Built with</h3>
