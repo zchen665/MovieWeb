@@ -9,7 +9,6 @@ import { PrivateRoute } from './components/PrivateRoute.js'
 import Login from './components/Login.js';
 import SignUp from './components/SignUp.js';
 import SearchResult from './components/SearchResult.js';
-import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const IMG_URL = 'https://thumbnails.moviemania.io/phone/movie/129/54091e/670x1192.jpg'
 
@@ -19,7 +18,8 @@ class App extends Component {
     isAuthed: false, //authentication will not impact much of this component.
     username: null,
     cur_page: 1,
-    show_background: false
+    show_background: false,
+    warning: ""
   };
 
   //toggles back ground
@@ -41,7 +41,11 @@ class App extends Component {
   //update url and jump to SearchResult page
   handle_submit = (page = null, val = null) => {
     const { cur_page, search_val } = page && val ? { page, val } : this.state;
-    this.props.history.push(`/search=${search_val}/page=${cur_page}`);
+    if (!search_val) this.setState({ warning: "Please enter something" });
+    else {
+      this.setState({ warning: "" });
+      this.props.history.push(`/search=${search_val}/page=${cur_page}`);
+    }
   };
 
 
@@ -74,7 +78,7 @@ class App extends Component {
 
 
   render() {
-    const { username, isAuthed, show_background } = this.state;
+    const { username, isAuthed, show_background, warning } = this.state;
     return (
       <div>
         {show_background && <img className="full_body_background" id='background' src={IMG_URL} />}
@@ -86,6 +90,7 @@ class App extends Component {
           <Route path={'/' || '/search=:search_val/'}>
             <div className="flex_container_col">
               <Search textchange={this.handle_textChange} onsearch={this.handle_submit} />
+              {warning ? <h3 className="warm_font">{warning}</h3> : null}
 
               <Route exact path='/movie_id=:movie_id'><MoviePage isAuthed={isAuthed} username={username} /></Route>
               <Route exact path='/search=:search_val/page=:cur_page'><SearchResult /></Route>

@@ -22,13 +22,11 @@ footer{
 .full_body_background{
   position: absolute;
   object-fit: cover;
-  object-position: 0 17%;
-  top:40px;
+  object-position: 0 15%;
+  top: 0;
   left: 0;
-  right: 0;
   width: 100%;
-  min-height: 600px;
-  height: calc(100vh - 60px);
+  height: 100%;
   background-image: url(https://thumbnails.moviemania.io/phone/movie/129/54091e/670x1192.jpg);
   z-index: -1;
   opacity: 0.7;
@@ -143,10 +141,15 @@ footer{
 #search_btn{
   width: 40px;
   border-radius: 10px;
+  color: black;
 }
 #search_btn:hover{
   background-color: rgb(204, 248, 250);
 }
+#search_btn>img{
+  width: 25px;
+}
+
 /* End of Search component css */
 
 /* start of movie display section*/
@@ -401,6 +404,9 @@ dl>dd{
 /* resize header */
   #header, #header *{font-size:medium; height: 40px; } 
   #refresh_icon {width: 30px; height: auto;}
+
+  /* resize search text box */
+  #search_textbox{width: calc(100vw - 60px);}
 
   /* resize login form */
   #login_form{width: 100%;}

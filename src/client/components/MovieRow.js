@@ -70,7 +70,7 @@ const MovieRow = (props) => {
     }
 
     return (
-        <div className='movie_row'>
+        <div>
             {
                 loading ? <h4>loading...</h4> :
                     warning ? <h4>{warning}</h4> :

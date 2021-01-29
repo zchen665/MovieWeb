@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import s_icon from '../img/search_icon.png';
 class Search extends Component {
     constructor(props) {
         super(props);
@@ -25,7 +25,7 @@ class Search extends Component {
                         onChange={this.handle_text_change}
                         placeholder="Search Something"
                     />
-                    <button id='search_btn' className="clean_btn" onClick= {this.handle_onsubmit}><i className="fas fa-search fa-lg"></i> </button>
+                    <button id='search_btn' className="clean_btn" onClick={this.handle_onsubmit}><img src={s_icon} alt='Search' /> </button>
                 </form>
             </div>
         );

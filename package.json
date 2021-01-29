@@ -4,6 +4,7 @@
   "description": "Boilerplate to build a full stack web application using React, Node.js, Express and Webpack.",
   "main": "src/server/index.js",
   "scripts": {
+    "bundle-report": "npx webpack --profile --json > compilation-stats.json",
     "build": "webpack --mode production",
     "start": "npm run build && node src/server/index.js",
     "client": "webpack-dev-server --mode development --devtool inline-source-map --hot",
@@ -13,7 +14,6 @@
   "author": "Sandeep Raveesh",
   "license": "ISC",
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.15.1",
     "babel-polyfill": "^6.26.0",
     "body-parser": "^1.19.0",
     "express": "^4.16.3",
@@ -44,6 +44,7 @@
     "style-loader": "^0.23.0",
     "url-loader": "^1.0.1",
     "webpack": "^4.5.0",
+    "webpack-bundle-analyzer": "^4.4.0",
     "webpack-cli": "^3.0.8",
     "webpack-dev-server": "^3.1.3"
   }
