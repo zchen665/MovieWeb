@@ -1,5 +1,6 @@
 const mysql = require('mysql2/promise');
-const { util } = require('webpack');
+
+// database information here
 const [admin_user, admin_host, admin_pw, db_name] = ['root', 'localhost', '12345', 'mv_app'];
 const db_config = {
     host: admin_host,
@@ -257,14 +258,6 @@ const get_all_movies = async (u_id) => {
     return res;
 }
 
-// (async () => {
-//     // await add_user("DAOKO", "1234");
-//     // let val_1 = await get_all_movies("DAOKO","GOD BLOW");
-//     // console.log("result: ", val_1);
-//     let val_2 = await remove_movie("DAOKO", "god BLOW");
-//     console.log("result 2:", val_2);
-
-// })();
 
 module.exports = {
     create_db: create_db,
