@@ -8,7 +8,8 @@ module.exports = {
   entry: ['babel-polyfill', './src/client/index.js'],
   output: {
     path: path.join(__dirname, outputDirectory),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    publicPath: '/'
   },
   module: {
     rules: [{
@@ -40,8 +41,8 @@ module.exports = {
     }
   },
   plugins: [
-    // new CleanWebpackPlugin([outputDirectory]),
-    new BundleAnalyzerPlugin(),
+    new CleanWebpackPlugin([outputDirectory]),
+    // new BundleAnalyzerPlugin(),
     new HtmlWebpackPlugin({
       template: './public/index.html',
       favicon: './public/favicon.png'

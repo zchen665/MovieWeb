@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 
 //provide a wrapper around passed in child component, make it 
 //only accessible if authorized/ logged in 
-class PrivateRoute extends React.Component {
+export default class PrivateRoute extends React.Component {
     constructor(props) {
         super(props);
         const session = sessionStorage.getItem('token');
@@ -41,4 +41,3 @@ class PrivateRoute extends React.Component {
 
 }
 
-export { PrivateRoute };

@@ -1,15 +1,14 @@
-import React, { Component } from 'react';
+import React, { Suspense, Component } from 'react';
 import Header from './components/Header.js';
 import { Search } from './components/Search.js';
-import Movie from './components/Movie.js';
-import MoviePage from './components/MoviePage.js';
-import { BrowserRouter, IndexRoute, Route, Switch, withRouter } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 import UserPage from './components/UserPage.js';
-import { PrivateRoute } from './components/PrivateRoute.js'
+import PrivateRoute from './components/PrivateRoute.js'
 import Login from './components/Login.js';
 import SignUp from './components/SignUp.js';
-import SearchResult from './components/SearchResult.js';
 
+const SearchResult = React.lazy(() => import('./components/SearchResult.js'));
+const MoviePage = React.lazy(() => import('./components/MoviePage'));
 const IMG_URL = 'https://thumbnails.moviemania.io/phone/movie/129/54091e/670x1192.jpg'
 
 class App extends Component {
@@ -85,15 +84,19 @@ class App extends Component {
         <Header isAuthed={isAuthed} username={username} />
         <Switch>
           <PrivateRoute exact path='/user' component={UserPage} logout_request={this.handle_log_inout} />
+
           <Route exact path='/login'><Login login_request={this.handle_log_inout} change_background={this.handle_background} /> </Route>
+
+
           <Route exact path='/sign_up'><SignUp login_request={this.handle_log_inout} change_background={this.handle_background} /></Route>
           <Route path={'/' || '/search=:search_val/'}>
             <div className="flex_container_col">
               <Search textchange={this.handle_textChange} onsearch={this.handle_submit} />
               {warning ? <h3 className="warm_font">{warning}</h3> : null}
-
-              <Route exact path='/movie_id=:movie_id'><MoviePage isAuthed={isAuthed} username={username} /></Route>
-              <Route exact path='/search=:search_val/page=:cur_page'><SearchResult /></Route>
+              <Suspense fallback={<h3>Loading</h3>}>
+                <Route exact path='/movie_id=:movie_id'><MoviePage isAuthed={isAuthed} username={username} /></Route>
+                <Route exact path='/search=:search_val/page=:cur_page'><SearchResult /></Route>
+              </Suspense>
             </div>
           </Route >
 

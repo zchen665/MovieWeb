@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, Redirect, withRouter } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 
 class SignUp extends React.Component {
     constructor(props) {

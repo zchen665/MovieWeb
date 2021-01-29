@@ -4,8 +4,7 @@
   "description": "Boilerplate to build a full stack web application using React, Node.js, Express and Webpack.",
   "main": "src/server/index.js",
   "scripts": {
-    "bundle-report": "npx webpack --profile --json > compilation-stats.json",
-    "build": "webpack --mode production",
+    "build": "webpack --mode production ",
     "start": "npm run build && node src/server/index.js",
     "client": "webpack-dev-server --mode development --devtool inline-source-map --hot",
     "server": "nodemon src/server/index.js",
