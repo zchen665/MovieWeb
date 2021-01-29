@@ -1,7 +1,7 @@
 {
-  "name": "simple-react-full-stack",
+  "name": "movie-web-full-stack",
   "version": "1.0.0",
-  "description": "Boilerplate to build a full stack web application using React, Node.js, Express and Webpack.",
+  "description": "full stack movie search web built with Express, React, Node and mySQL.",
   "main": "src/server/index.js",
   "scripts": {
     "build": "webpack --mode production ",
@@ -10,13 +10,12 @@
     "server": "nodemon src/server/index.js",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
-  "author": "Sandeep Raveesh",
+  "author": "ZHENGZHI",
   "license": "ISC",
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "body-parser": "^1.19.0",
     "express": "^4.16.3",
-    "mysql": "^2.18.1",
     "mysql2": "^2.2.5",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",

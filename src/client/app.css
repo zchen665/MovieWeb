@@ -211,8 +211,9 @@ footer{
   background-color: rgb(161, 165, 165);
 }
 .page_active {
-  background-color: rgb(207, 226, 226);
+  color: rgb(34, 134, 134);
   text-decoration: underline;
+  font-size: larger;
 }
 /* end of page navigator section */
 

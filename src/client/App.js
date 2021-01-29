@@ -23,7 +23,7 @@ class App extends Component {
 
   //toggles back ground
   handle_background = (bool) => {
-    const path = window.location.pathname;
+    const path = window.location.hash.substr(1);
     //unmount of either Login or SignUp component is triggered later
     //this will block the toggling in navigation from Login to Signup or
     //vice versa 
